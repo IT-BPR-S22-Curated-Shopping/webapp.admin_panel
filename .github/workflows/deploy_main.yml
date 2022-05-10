@@ -1,0 +1,38 @@
+# Name of workflow
+name: Deploy to Netlify website
+
+# When workflow is triggered
+on:
+  push:
+    branches:
+      - main
+
+# Jobs to carry out
+jobs:
+  deploy:
+    name: Deploy to website
+    # Operating system to run job on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout the Source Code
+        uses: actions/checkout@v2
+
+      - name: Install Client
+        run: npm ci
+
+      - name: Build Client
+        run: npm run build
+        # Set base url for remote endpoint
+
+      - name: Netlify Actions for Deploying App
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: "./build"
+          deploy-message: "${{ github.event.head_commit.message }}"
+          production-deploy: true
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
