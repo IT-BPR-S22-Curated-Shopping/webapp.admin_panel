@@ -89,7 +89,7 @@ export default function App() {
                 <Divider />
                 <p> stuff</p>
             </DrawerMenu>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1, pl: 3, pt: 2 }}>
                 <DrawerHeader />
                 <Routes>
                     <Route path="/" element={<Home/>}/>
