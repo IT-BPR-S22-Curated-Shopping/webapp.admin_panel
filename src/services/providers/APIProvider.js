@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+
 function APIProvider (baseUrl) {
     const get = (path, headers, params={}) => axios
     .get(

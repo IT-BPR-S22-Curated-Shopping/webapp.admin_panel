@@ -1,7 +1,7 @@
 import {Backdrop, Box, Button, Fade, Modal, TextField} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 function LocationAddModalComponent(props) {
 
@@ -16,14 +16,12 @@ function LocationAddModalComponent(props) {
         boxShadow: 24,
         p: 4,
     };
-
+    let locationNameRef = useRef('');
     const handleCloseModal = () => props.set(false);
-
     const handleOnButtonClick = () => {
-        props.set(false)
-        //TODO Do something on click
-        console.log("Button clicked");
-    }
+        props.set(false);
+        props.callback(locationNameRef.current.value);
+    };
 
     return (
         <Modal
@@ -38,7 +36,7 @@ function LocationAddModalComponent(props) {
             }}
         >
             <Fade in={props.get}>
-                <Box sx={modalStyle} flexDirection={'column'} display={"flex"}>
+                <Box sx={modalStyle} flexDirection={'column'} display={'flex'}>
 
                     <Typography id="transition-modal-title" variant="h6" component="h2">
                         Create new location
@@ -49,12 +47,13 @@ function LocationAddModalComponent(props) {
                         label="Location name"
                         defaultValue=""
                         variant="filled"
+                        inputRef={locationNameRef}
                     />
-                    <Button sx={{mt:2}} onClick={handleOnButtonClick}>Save</Button>
+                    <Button sx={{mt: 2}} onClick={handleOnButtonClick}>Save</Button>
                 </Box>
             </Fade>
         </Modal>
-    )
+    );
 }
 
 export default LocationAddModalComponent;

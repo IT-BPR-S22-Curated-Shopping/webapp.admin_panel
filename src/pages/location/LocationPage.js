@@ -9,7 +9,7 @@ import LocationAddModalComponent from './LocationAddModalComponent';
 
 function LocationPage() {
 
-    const api = LocationService.LocationServiceMock();
+    const api = LocationService.LocationService();
     const [locationList, setLocationList] = React.useState([]);
     const [locationDetails, setLocationDetails] = React.useState(null);
     const [openModal, setOpenModal] = React.useState(false);
@@ -18,11 +18,16 @@ function LocationPage() {
 
     const clickCallback = (data) => {
         api.get(data.id).then((res, error) => {
-                console.log(res.data);
                 setLocationDetails(res.data);
             },
         );
     };
+
+    const modalCallback = (data) => {
+        api.addLocation(data).then((res) => {
+            setLocationList(locationList => [...locationList, res.data]);
+        })
+    }
 
     useEffect(() => {
         api.getAll().then((res, err) => {
@@ -68,7 +73,7 @@ function LocationPage() {
 
                     </Grid>
                 </Grid>
-                <LocationAddModalComponent get={openModal} set={setOpenModal}/>
+                <LocationAddModalComponent get={openModal} set={setOpenModal} callback={modalCallback}/>
             </main>
         </React.Fragment>
     );

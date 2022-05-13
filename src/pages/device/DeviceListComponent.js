@@ -4,7 +4,7 @@ import {
     List, ListItemAvatar, ListItemButton,
     ListItemText,
 } from '@mui/material';
-import {BluetoothSearching, ToggleOn, ToggleOff} from '@mui/icons-material';
+import {BluetoothSearching, ToggleOn, ToggleOff, DeviceUnknown} from '@mui/icons-material';
 import {useEffect} from 'react';
 
 function DeviceListComponent(props) {
@@ -37,11 +37,14 @@ function DeviceListComponent(props) {
                                 >
                                     <ListItemAvatar>
                                         <Avatar>
-                                            <BluetoothSearching/>
+                                            {
+                                                x.deviceType === 'BLE' ? (<BluetoothSearching/>) : (<DeviceUnknown/>)
+                                            }
+
                                         </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText
-                                        primary={x.deviceName}
+                                        primary={x.companyId}
                                         secondary={secondary ? 'ID: ' + x.deviceId : null}
                                     />
                                     <IconButton edge="end" aria-label="delete">

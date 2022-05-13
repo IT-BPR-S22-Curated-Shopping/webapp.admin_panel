@@ -19,7 +19,15 @@ function LocationService() { //TODO: provider in constructor
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
-    return {getAll, get};
+    const addLocation = (name) => {
+        return api.post(`${path}/name`, {
+            name: name
+        })
+        .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+        .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, { errorMsg: error }))
+    }
+
+    return {getAll, get, addLocation};
 }
 
 function LocationServiceMock() {
@@ -75,7 +83,13 @@ function LocationServiceMock() {
         });
     };
 
-    return {getAll, get};
+    const addLocation = (name) => {
+        return {
+
+        }
+    }
+
+    return {getAll, get, addLocation};
 }
 
 export default {LocationService, LocationServiceMock};

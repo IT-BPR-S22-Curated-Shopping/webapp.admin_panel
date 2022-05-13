@@ -12,6 +12,7 @@ function DevicePage() {
 
     const deviceClickCallback = (data) => {
         api.get(data.id).then((res, error) => {
+            console.log(res);
                 setDeviceDetails(res.data.deviceLog);
             },
         );
