@@ -19,15 +19,30 @@ function LocationService() { //TODO: provider in constructor
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
-    const addLocation = (name) => {
-        return api.post(`${path}/name`, {
-            name: name
-        })
-        .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
-        .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, { errorMsg: error }))
-    }
+    const addLocation = (data) => {
+        return api.post(`${path}`, {
+            name: data.name,
+            productId: data.productId,
+            deviceId: data.deviceId,
+            presentationId: data.presentationId
+        }).
+            then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
+            catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+    };
 
-    return {getAll, get, addLocation};
+    const update = (location) => {
+        return api.put(`${path}/${location.id}`, location).
+            then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
+            catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+    };
+
+    const removeLocation = (id) => {
+        return api.del(`${path}/${id}`).
+            then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
+            catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+    };
+
+    return {getAll, get, addLocation, removeLocation, update};
 }
 
 function LocationServiceMock() {
@@ -84,12 +99,18 @@ function LocationServiceMock() {
     };
 
     const addLocation = (name) => {
-        return {
+        return {};
+    };
 
-        }
+    const removeLocation = (id) => {
+        return {};
+    };
+
+    const update = (location) => {
+        return {}
     }
 
-    return {getAll, get, addLocation};
+    return {getAll, get, addLocation, removeLocation, update}
 }
 
 export default {LocationService, LocationServiceMock};

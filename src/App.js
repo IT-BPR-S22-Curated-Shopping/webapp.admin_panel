@@ -17,7 +17,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import {Route, Routes, useNavigate} from 'react-router-dom';
-import {About, Device, Home, Location} from './util/components';
+import {About, Device, Home, Location, NewLocation} from './util/components';
 import {AppBarMenu, DrawerMenu, DrawerHeader} from './navigation/AppBarMenu';
 
 export default function App() {
@@ -89,13 +89,15 @@ export default function App() {
                 <Divider />
                 <p> stuff</p>
             </DrawerMenu>
-            <Box component="main" sx={{ flexGrow: 1, pl: 3, pt: 2 }}>
+            <Box component="main" sx={{ flexGrow: 1, pl: 1}}>
                 <DrawerHeader />
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/home" element={<Home/>}/>
                     <Route path="/about" element={<About/>}/>
                     <Route path="/location" element={<Location/>}/>
+                    <Route path="/location/:id" element={<Location/>}/>
+                    <Route path="/location/new" element={<NewLocation/>}/>
                     <Route path="/device" element={<Device/>}/>
                 </Routes>
             </Box>

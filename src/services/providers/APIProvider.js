@@ -26,8 +26,15 @@ function APIProvider (baseUrl) {
         }
     );
 
+    const put = (path, body, headers={}) => axios({
+        method: 'put',
+        url: baseUrl + path,
+        headers: headers,
+        data: body
+    })
+
     return {
-        get, post, del
+        get, post, del, put
     }
 }
 

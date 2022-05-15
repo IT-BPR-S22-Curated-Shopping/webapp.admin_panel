@@ -1,79 +1,117 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import {useEffect} from 'react';
-import {Box, Button, Fade, Grid, Modal, Backdrop} from '@mui/material';
+import {Box, Button, Grid} from '@mui/material';
 
 import LocationListComponent from './LocationListComponent';
 import LocationService from '../../services/LocationService';
-import LocationAddModalComponent from './LocationAddModalComponent';
+
+import ServiceResponseEnum from '../../util/ServiceResponseEnum';
+import {useNavigate, useParams} from 'react-router-dom';
+import DeviceService from '../../services/DeviceService';
 
 function LocationPage() {
-
-    const api = LocationService.LocationService();
+    const params = useParams();
+    const apiLocation = LocationService.LocationServiceMock();
+    const apiDevice = DeviceService.DeviceServiceMock();
     const [locationList, setLocationList] = React.useState([]);
-    const [locationDetails, setLocationDetails] = React.useState(null);
-    const [openModal, setOpenModal] = React.useState(false);
+    const [locationDetails, setLocationDetails] = React.useState();
+    const navigate = useNavigate();
 
-    const handleOpenModal = () => setOpenModal(true);
 
     const clickCallback = (data) => {
-        api.get(data.id).then((res, error) => {
+        navigate('/location/' + data.id);
+        apiLocation.get(data.id).then((res, error) => {
                 setLocationDetails(res.data);
             },
         );
     };
 
-    const modalCallback = (data) => {
-        api.addLocation(data).then((res) => {
-            setLocationList(locationList => [...locationList, res.data]);
-        })
+    const handleAddLocationClick = () => {
+        navigate('/location/new')
     }
 
+    const removeLocationClick = (location) => {
+        apiLocation.removeLocation(location.id).then((res) => {
+            if (res.state === ServiceResponseEnum.SUCCESS) {
+                let index = locationList.findIndex(x => x.id === location.id);
+                if (index > -1) {
+                    setLocationList([
+                        ...locationList.slice(0, index),
+                        ...locationList.slice(index + 1, locationList.length),
+                    ]);
+                    setLocationDetails(null);
+                } else {
+                    // something went wrong
+                    console.log('could not find item in list');
+                }
+
+            }
+        });
+    };
+
     useEffect(() => {
-        api.getAll().then((res, err) => {
+        if (params.id != null || params.id !== {}) {
+            clickCallback({id: params.id});
+        }
+
+        apiLocation.getAll().then((res, err) => {
             setLocationList(res.data);
         });
     }, []);
 
     return (
-        <React.Fragment>
+        <React.Fragment >
             <main>
-                <Grid container>
-                    <Grid
-                        item md={4} lg={2}
-                        sx={{borderRight: 1}} height={'92vh'}
-                        display="flex"
-                        flexDirection={'column'}
+                <Grid container height={'93vh'}>
+                    <Grid item xs={4}
+                        sx={{borderRight: 1}}
                         justifyContent="top"
                         alignItems="left">
-                        <Typography variant="h6" textAlign={'center'}>
-                            Locations
-                        </Typography>
+                        <Box pt={2}>
+                            <Typography variant="h6" textAlign={'center'}>
+                                Locations
+                            </Typography>
 
-                        <LocationListComponent listData={locationList} callback={clickCallback}/>
+                            <LocationListComponent listData={locationList} callback={clickCallback}/>
 
-                        <Button onClick={handleOpenModal}>Add location</Button>
+                            <Button onClick={handleAddLocationClick}>Add location</Button>
+                        </Box>
                     </Grid>
-                    <Grid item xs={5} md={4} m={2}>
-                        {
-                            locationDetails != null && (
-                                <div>
-                                    <p>id: {locationDetails.id}</p>
-                                    <p>name: {locationDetails.name}</p>
-                                    <p>presentation devices: {locationDetails.presentationDevices.map((x) => x.id).
-                                        toString()}</p>
-                                    <p>products: {locationDetails.product.productNo},
-                                        tags: {locationDetails.product.tags.map((x) => x.tag).toString()}</p>
-                                    <p>devices: {locationDetails.trackingDevices.map((x) => x.name).toString()}</p>
-                                </div>
-
-                            )
-
-                        }
-
+                    <Grid item xs={4}
+                          sx={{borderRight: 1}}>
+                        <Box p={2}>
+                            {
+                                locationDetails != null && (
+                                    <div>
+                                        <p>id: {locationDetails.id}</p>
+                                        <p>name: {locationDetails.name}</p>
+                                        <p>presentation devices: {locationDetails.presentationDevices.map((x) => x.id).
+                                            toString()}</p>
+                                        <p>products: {locationDetails.product != null && locationDetails.product.productNo
+                                            ? locationDetails.product.productNo
+                                            : ''},
+                                            tags: {locationDetails.product != null && locationDetails.product.tags != null
+                                                ? locationDetails.product.tags.map((x) => x.tag).toString()
+                                                : ''}
+                                        </p>
+                                        <p>devices: {locationDetails.trackingDevices.map((x) => x.name).toString()}</p>
+                                        <Button onClick={() => removeLocationClick(locationDetails)}>Remove
+                                            location</Button>
+                                    </div>
+                                )}
+                        </Box>
+                    </Grid>
+                    <Grid item xs={4}
+                          sx={{borderRight: 1}}>
+                        <Box p={2}>
+                            <Button>Set device</Button>
+                            <Button>Set presentation</Button>
+                            <Button>Set product</Button>
+                        </Box>
                     </Grid>
                 </Grid>
-                <LocationAddModalComponent get={openModal} set={setOpenModal} callback={modalCallback}/>
+
             </main>
         </React.Fragment>
     );

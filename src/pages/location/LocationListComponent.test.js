@@ -37,11 +37,21 @@ describe('test LocationListComponent', () => {
             // act
             fireEvent.click(button);
 
-
             // assert
             expect(button).toBeDefined();
-            expect(clickCount).toBe(1)
-            expect(returnData).toBe(list[1])
+            expect(clickCount).toBe(1);
+            expect(returnData).toBe(list[1]);
         });
+    });
+    describe('if component can handle null values', () => {
+        it('has location null but does not fail', () => {
+            // arrange
+            // act
+            const t = () => {render(<LocationListComponent listData={null} callback={null}/>);};
+
+            // assert
+            expect(t).not.toThrow();
+        });
+
     });
 });

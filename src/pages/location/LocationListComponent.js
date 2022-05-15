@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {
-    Avatar, Box, Grid, List, ListItemAvatar, ListItemButton,
+    Box, Grid, List, ListItemButton,
     ListItemText,
 } from '@mui/material';
-import {BluetoothSearching} from '@mui/icons-material';
 import {useEffect} from 'react';
 import Divider from '@mui/material/Divider';
 
@@ -24,13 +23,12 @@ function LocationListComponent(props) {
     }, [props.listData]);
 
     return (
-
             <Box>
                 <Divider/>
                 <Grid>
                     <Grid>
                         <List dense={dense}>
-                            {locationList.map(x => (
+                            {locationList?.length > 0 && locationList.map(x => (
                                 <ListItemButton
                                     key={x.id}
                                     selected={selectedIndex === locationList.indexOf(x)}
@@ -46,7 +44,6 @@ function LocationListComponent(props) {
                     </Grid>
                 </Grid>
             </Box>
-
     );
 }
 
