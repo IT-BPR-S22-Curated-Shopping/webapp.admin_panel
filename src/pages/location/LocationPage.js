@@ -3,12 +3,12 @@ import Typography from '@mui/material/Typography';
 import {useEffect} from 'react';
 import {Box, Button, Grid} from '@mui/material';
 
-import LocationListComponent from './LocationListComponent';
 import LocationService from '../../services/LocationService';
 
 import ServiceResponseEnum from '../../util/ServiceResponseEnum';
 import {useNavigate, useParams} from 'react-router-dom';
 import DeviceService from '../../services/DeviceService';
+import ListComponent from '../../components/ListComponent';
 
 function LocationPage() {
     const params = useParams();
@@ -17,7 +17,6 @@ function LocationPage() {
     const [locationList, setLocationList] = React.useState([]);
     const [locationDetails, setLocationDetails] = React.useState();
     const navigate = useNavigate();
-
 
     const clickCallback = (data) => {
         navigate('/location/' + data.id);
@@ -28,8 +27,8 @@ function LocationPage() {
     };
 
     const handleAddLocationClick = () => {
-        navigate('/location/new')
-    }
+        navigate('/location/new');
+    };
 
     const removeLocationClick = (location) => {
         apiLocation.removeLocation(location.id).then((res) => {
@@ -56,27 +55,31 @@ function LocationPage() {
         }
 
         apiLocation.getAll().then((res, err) => {
-            setLocationList(res.data);
+            setLocationList(res.data.map((x) => {
+                return {id: x.id, value: x.name};
+            }));
         });
     }, []);
 
     return (
-        <React.Fragment >
+        <React.Fragment>
             <main>
                 <Grid container height={'93vh'}>
-                    <Grid item xs={4}
-                        sx={{borderRight: 1}}
-                        justifyContent="top"
-                        alignItems="left">
-                        <Box pt={2}>
-                            <Typography variant="h6" textAlign={'center'}>
-                                Locations
-                            </Typography>
+                    <Grid
 
-                            <LocationListComponent listData={locationList} callback={clickCallback}/>
+                        item md={4} lg={2}
+                        sx={{borderRight: 1}} height={'93vh'}
+                        display="flex"
+                        flexDirection={'column'}
+                        justifyContent="top|center"
+                        alignItems="center">
+                        <Typography variant="h6">
+                            Location
+                        </Typography>
 
-                            <Button onClick={handleAddLocationClick}>Add location</Button>
-                        </Box>
+                        <ListComponent listData={locationList} callback={clickCallback} divide={true}/>
+                        <Button onClick={handleAddLocationClick}>Add location</Button>
+
                     </Grid>
                     <Grid item xs={4}
                           sx={{borderRight: 1}}>
@@ -88,10 +91,12 @@ function LocationPage() {
                                         <p>name: {locationDetails.name}</p>
                                         <p>presentation devices: {locationDetails.presentationDevices.map((x) => x.id).
                                             toString()}</p>
-                                        <p>products: {locationDetails.product != null && locationDetails.product.productNo
+                                        <p>products: {locationDetails.product != null &&
+                                        locationDetails.product.productNo
                                             ? locationDetails.product.productNo
                                             : ''},
-                                            tags: {locationDetails.product != null && locationDetails.product.tags != null
+                                            tags: {locationDetails.product != null && locationDetails.product.tags !=
+                                            null
                                                 ? locationDetails.product.tags.map((x) => x.tag).toString()
                                                 : ''}
                                         </p>
