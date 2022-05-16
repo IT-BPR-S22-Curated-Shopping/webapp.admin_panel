@@ -16,8 +16,8 @@ import DeviceService from '../../services/DeviceService';
 
 function NewLocationPage() {
 
-    const locationApi = LocationService.LocationServiceMock();
-    const deviceApi = DeviceService.DeviceServiceMock();
+    const locationApi = LocationService.LocationService();
+    const deviceApi = DeviceService.DeviceService();
     // const productApi = ProductService.ProductService()
     // const presentationApi = PresentationService.PresentationService();
 
