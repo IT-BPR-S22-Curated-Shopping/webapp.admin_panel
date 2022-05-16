@@ -17,13 +17,14 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import {Route, Routes, useNavigate} from 'react-router-dom';
-import {About, Device, Home, Location, NewLocation} from './util/components';
+import {About, Device, Home, Location, NewLocation, Product, NewProduct} from './util/components';
 import {AppBarMenu, DrawerMenu, DrawerHeader} from './navigation/AppBarMenu';
 
 export default function App() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
+    const pages = ['Home', 'Device', 'Location', 'Product']
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -63,7 +64,7 @@ export default function App() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {['Home', 'Device', 'Location', ].map((text, index) => (
+                    {pages.map((text, index) => (
                         <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => navigate('/' + text.toLowerCase())} >
                             <ListItemButton
                                 sx={{
@@ -99,6 +100,8 @@ export default function App() {
                     <Route path="/location/:id" element={<Location/>}/>
                     <Route path="/location/new" element={<NewLocation/>}/>
                     <Route path="/device" element={<Device/>}/>
+                    <Route path="/product" element={<Product/>}/>
+                    <Route path="/product/new" element={<NewProduct/>}/>
                 </Routes>
             </Box>
         </Box>
