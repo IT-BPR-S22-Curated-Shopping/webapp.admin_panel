@@ -19,12 +19,24 @@ import MailIcon from '@mui/icons-material/Mail';
 import {Route, Routes, useNavigate} from 'react-router-dom';
 import {About, Device, Home, Location, NewLocation, Product, NewProduct} from './util/components';
 import {AppBarMenu, DrawerMenu, DrawerHeader} from './navigation/AppBarMenu';
+import Login from './pages/login/login';
+import { event } from './managers/events/Event.js'
+import EventManager from './managers/events/EventManager.js';
+import { firebaseConfiguration } from './configuration/FirebaseConfiguration.js';
+import AuthService from './services/AuthService.js';
+
 
 export default function App() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
     const pages = ['Home', 'Device', 'Location', 'Product']
+
+
+    const eventManager = EventManager(event);
+    const authService = AuthService(firebaseConfiguration, eventManager);
+
+
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -93,6 +105,7 @@ export default function App() {
             <Box component="main" sx={{ flexGrow: 1, pl: 1}}>
                 <DrawerHeader />
                 <Routes>
+                    <Route path="/login" element={<Login eventManager={eventManager}/>}/>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/home" element={<Home/>}/>
                     <Route path="/about" element={<About/>}/>

@@ -1,11 +1,24 @@
 import axios from 'axios';
+import { axiosConfiguration } from '../../configuration/AxiosConfiguration'
+import EventManager from "../../managers/events/EventManager";
+// import AuthService from '../AuthService'
+// import {firebaseConfiguration} from "../../configuration/FirebaseConfiguration";
 
 axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+axios.defaults.baseURL = axiosConfiguration.baseUrl;
+// const auth = AuthService(firebaseConfiguration);
+// auth.login("test@test.dk", "1test2!");
 
-function APIProvider (baseUrl) {
-    const get = (path, headers, params={}) => axios
+function APIProvider () {
+    const setAccessToken = (jwt) => axios.defaults.headers.common = {'Authorization': `${axiosConfiguration.AuthType} ${jwt}`};
+
+    // const eventManager = EventManager();
+    // eventManager.addListener(eventManager.event().loggedIn, setAccessToken);
+    // eventManager.addListener(eventManager.event().loggedOut, setAccessToken);
+
+    const get = (path, headers = {}, params={}) => axios
     .get(
-        baseUrl + path,
+        path,
         {
             headers: headers,
             params: params
@@ -14,13 +27,13 @@ function APIProvider (baseUrl) {
 
     const post =  (path, body, headers={}) => axios({
         method: 'post',
-        url: baseUrl + path,
+        url: path,
         headers: headers,
         data: body
     })
 
-    const del = (path, headers) => axios
-    .delete(baseUrl + path,
+    const del = (path, headers = {}) => axios
+    .delete(path,
         {
             headers: headers
         }
@@ -28,7 +41,7 @@ function APIProvider (baseUrl) {
 
     const put = (path, body, headers={}) => axios({
         method: 'put',
-        url: baseUrl + path,
+        url: path,
         headers: headers,
         data: body
     })

@@ -1,10 +1,9 @@
 import {ServiceResponseObject} from './ServiceResponseObject';
 import ServiceResponseEnum from '../util/ServiceResponseEnum';
-import {BASE_URL} from '../util/constants';
 import APIProvider from './providers/APIProvider';
 
 function LocationService() { //TODO: provider in constructor
-    const api = APIProvider(BASE_URL);
+    const api = APIProvider();
     const path = '/location';
 
     const getAll = () => {

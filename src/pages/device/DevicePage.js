@@ -8,7 +8,7 @@ import LocationService from '../../services/LocationService';
 import {Edit, EditLocation} from '@mui/icons-material';
 
 function DevicePage() {
-    const api = DeviceService.DeviceServiceMock();
+    const api = DeviceService.DeviceService();
     const locationApi = LocationService.LocationServiceMock();
 
     const [deviceList, setDeviceList] = React.useState([]);
