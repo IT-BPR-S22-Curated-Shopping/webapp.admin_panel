@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useEffect} from "react";
 
-export default function Login(props) {
+function Login(props) {
     const eventManager = props.eventManager;
     const [pwValue, setPwValue] = React.useState('')
     const [pwError, setPwError] = React.useState(false);
@@ -114,7 +114,7 @@ export default function Login(props) {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Login
+                    Sign in
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                     <TextField
@@ -160,3 +160,5 @@ export default function Login(props) {
         </Container>
     );
 }
+
+export default Login;

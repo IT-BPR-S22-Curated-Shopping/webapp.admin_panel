@@ -1,13 +1,11 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {Button, Card, CardActions, CardContent, CardHeader, Chip, Grid, TextField} from '@mui/material';
-import ProductService from '../../services/ProductService';
-import TagService from '../../services/TagService';
 
-function NewProductPage() {
+function NewProductPage(props) {
 
-    const productApi = ProductService.ProductService();
-    const tagApi = TagService.TagService();
+    const productApi = props.productService;
+    const tagApi = props.tagService;
 
     const [storedTags, setStoredTags] = useState([]);
     const [name, setName] = useState('');

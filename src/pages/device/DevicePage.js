@@ -1,15 +1,13 @@
 import * as React from 'react';
 import DeviceListComponent from './DeviceListComponent';
 import {Button, Grid, IconButton, Typography} from '@mui/material';
-import DeviceService from '../../services/DeviceService';
 import {useEffect} from 'react';
 import DeviceLogComponent from './DeviceLogComponent';
-import LocationService from '../../services/LocationService';
 
 
-function DevicePage() {
-    const api = DeviceService.DeviceService();
-    const locationApi = LocationService.LocationServiceMock();
+function DevicePage(props) {
+    const api = props.deviceService;
+    const locationApi = props.locationService;
 
     const [deviceList, setDeviceList] = React.useState([]);
     const [deviceDetails, setDeviceDetails] = React.useState(null);

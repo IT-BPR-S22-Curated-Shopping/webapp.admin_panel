@@ -2,18 +2,14 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import {useEffect} from 'react';
 import {Box, Button, Grid} from '@mui/material';
-
-import LocationService from '../../services/LocationService';
-
-import ServiceResponseEnum from '../../util/ServiceResponseEnum';
 import {useNavigate, useParams} from 'react-router-dom';
-import DeviceService from '../../services/DeviceService';
+import ServiceResponseEnum from '../../util/ServiceResponseEnum';
 import ListComponent from '../../components/ListComponent';
 
-function LocationPage() {
+function LocationPage(props) {
     const params = useParams();
-    const apiLocation = LocationService.LocationServiceMock();
-    const apiDevice = DeviceService.DeviceServiceMock();
+    const apiLocation = props.locationService;
+    const apiDevice = props.deviceService;
     const [locationList, setLocationList] = React.useState([]);
     const [locationDetails, setLocationDetails] = React.useState();
     const navigate = useNavigate();

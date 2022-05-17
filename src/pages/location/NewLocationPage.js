@@ -11,15 +11,13 @@ import {
 
 } from '@mui/material';
 import {useEffect, useId, useState} from 'react';
-import LocationService from '../../services/LocationService';
-import DeviceService from '../../services/DeviceService';
 
-function NewLocationPage() {
+function NewLocationPage(props) {
 
-    const locationApi = LocationService.LocationService();
-    const deviceApi = DeviceService.DeviceService();
-    // const productApi = ProductService.ProductService()
-    // const presentationApi = PresentationService.PresentationService();
+    const locationApi = props.locationService;
+    const deviceApi = props.deviceService;
+    // const productApi = props.ProductService;
+    // const presentationApi = props.PresentationService;
 
     const [locationName, setLocationName] = useState('');
     const [selectedProduct, setSelectedProduct] = useState('');

@@ -1,20 +1,11 @@
 import axios from 'axios';
-import { axiosConfiguration } from '../../configuration/AxiosConfiguration'
-import EventManager from "../../managers/events/EventManager";
-// import AuthService from '../AuthService'
-// import {firebaseConfiguration} from "../../configuration/FirebaseConfiguration";
+import { useEffect }  from "react";
 
-axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
-axios.defaults.baseURL = axiosConfiguration.baseUrl;
-// const auth = AuthService(firebaseConfiguration);
-// auth.login("test@test.dk", "1test2!");
+function APIProvider (configuration, eventManager) {
+    axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+    axios.defaults.baseURL = configuration.baseUrl;
 
-function APIProvider () {
-    const setAccessToken = (jwt) => axios.defaults.headers.common = {'Authorization': `${axiosConfiguration.AuthType} ${jwt}`};
-
-    // const eventManager = EventManager();
-    // eventManager.addListener(eventManager.event().loggedIn, setAccessToken);
-    // eventManager.addListener(eventManager.event().loggedOut, setAccessToken);
+    const setAccessToken = (jwt) => axios.defaults.headers.common = {'Authorization': `${configuration.AuthType} ${jwt}`};
 
     const get = (path, headers = {}, params={}) => axios
     .get(
@@ -45,6 +36,16 @@ function APIProvider () {
         headers: headers,
         data: body
     })
+
+    useEffect(() => {
+        eventManager.addListener(eventManager.event().loggedIn, setAccessToken)
+        eventManager.addListener(eventManager.event().loggedOut, setAccessToken)
+
+        return function cleanup() {
+            eventManager.removeListener(eventManager.event().loggedIn, setAccessToken)
+            eventManager.removeListener(eventManager.event().loggedOut, setAccessToken)
+        };
+    }, [])
 
     return {
         get, post, del, put

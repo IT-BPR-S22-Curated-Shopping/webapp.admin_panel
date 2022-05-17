@@ -39,11 +39,13 @@ function AuthService(configuration, eventManager) {
             if (user) {
                 currentUser = user;
                 eventManager.invoke(eventManager.event().loggedIn, jwtToken());
+                console.log("Auth service: user signed in.")
             }
             else {
                 if (currentUser) {
                     currentUser = null;
                     eventManager.invoke(eventManager.event().loggedOut, "");
+                    console.log("Auth service: user signed out.")
                 }
             }
         });

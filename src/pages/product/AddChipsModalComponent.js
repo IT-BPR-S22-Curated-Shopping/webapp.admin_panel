@@ -2,8 +2,6 @@ import * as React from 'react';
 import {Box, Button, Chip, Grid, Modal, TextField, Typography} from '@mui/material';
 import {useEffect, useState} from 'react';
 import {AddCircleOutlineOutlined} from '@mui/icons-material';
-import TagService from '../../services/TagService';
-import ProductService from '../../services/ProductService';
 
 const style = {
     position: 'absolute',
@@ -19,8 +17,8 @@ const style = {
 
 function AddChipsModalComponent(props) {
 
-    const tagApi = TagService.TagService();
-    const productApi = ProductService.ProductService();
+    const tagApi = props.tagService;
+    const productApi = props.productService;
 
     const [open, setOpen] = React.useState(false);
     const [storedTags, setStoredTags] = useState([]);
