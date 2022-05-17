@@ -5,7 +5,7 @@ import DeviceService from '../../services/DeviceService';
 import {useEffect} from 'react';
 import DeviceLogComponent from './DeviceLogComponent';
 import LocationService from '../../services/LocationService';
-import {Edit, EditLocation} from '@mui/icons-material';
+
 
 function DevicePage() {
     const api = DeviceService.DeviceService();
@@ -16,7 +16,6 @@ function DevicePage() {
 
     const deviceClickCallback = (data) => {
         api.get(data.id).then((res, error) => {
-                // console.log(res);
                 setDeviceDetails(res.data);
             },
         );

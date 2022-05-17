@@ -12,23 +12,21 @@ function TagService() { //TODO: provider in constructor
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
-
     const add = (data) => {
         return api.post(`${path}`, {
-            name: data.name,
             tags: data.tags,
         }).
             then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
-    const update = (data) => {
-        return api.put(`${path}/${data.id}`, data).
+    const remove = (id) => {
+        return api.del(`${path}/${id}`).
             then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
-    };
+    }
 
-    return {getAll, add};
+    return {getAll, add, remove};
 }
 
 function TagServiceMock() {
@@ -45,13 +43,14 @@ function TagServiceMock() {
         });
     };
 
-
     const add = (data) => {
         return data;
     };
+    const remove = (id) => {
 
+    }
 
-    return {getAll, add};
+    return {getAll, add, remove};
 }
 
 export default {TagService, TagServiceMock};

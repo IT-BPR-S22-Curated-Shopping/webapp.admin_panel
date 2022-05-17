@@ -11,13 +11,15 @@ function NewProductPage() {
 
     const [storedTags, setStoredTags] = useState([]);
     const [name, setName] = useState('');
+    const [image, setImage] = useState('');
+    const [productNumber, setProductNumber] = useState('');
+
     const [chips, setChips] = useState([]);
-    const [tagInput, setTagInput] = useState("");
+    const [tagInput, setTagInput] = useState('');
 
     useEffect(() => {
         tagApi.getAll().then((res, error) => {
             if (res) {
-                console.table(res.data)
                 setStoredTags(res.data);
             }
         });
@@ -31,10 +33,18 @@ function NewProductPage() {
         setChips(chipArr);
     }, [tagInput]);
 
-
     const handleChangeName = (event) => {
         setName(event.target.value);
     };
+
+    const handleProductImageChange = (event) => {
+        setImage(event.target.value);
+    };
+
+    const handleProductNumberChange = (event) => {
+        setProductNumber(event.target.value);
+    };
+
     const handleChangeTags = (event) => {
         setTagInput(event.target.value);
     };
@@ -56,10 +66,11 @@ function NewProductPage() {
 
     const clearInput = () => {
         setName('');
-        setTagInput("");
+        setTagInput('');
+        setImage('');
+        setProductNumber('');
         setChips([]);
     };
-
 
     const onChipDeleteClick = (value) => {
         let regex = new RegExp('\\b' + value + '\\b', 'g');
@@ -72,22 +83,20 @@ function NewProductPage() {
     };
 
     const onSaveClick = () => {
-        console.log('save clicked');
         productApi.add({
             name: name,
-            tags: chips
+            productNo: productNumber,
+            image: image,
+            tags: chips,
         }).then((res, error) => {
 
-        })
+        });
         clearInput();
     };
 
     const onClearClick = () => {
-        console.log('clear clicked');
         clearInput();
     };
-
-
 
     return (
         <React.Fragment>
@@ -109,11 +118,17 @@ function NewProductPage() {
                                 <Grid container flexDirection={'column'}>
                                     <TextField sx={{m: 1}} id="standard-basic" label="Name" variant="standard"
                                                value={name} onChange={handleChangeName} onKeyDown={validateInput}/>
-                                    <Grid item>{chips.length > 0 && chips.map((c) => {
-                                        return <Chip key={c.tag} label={c.tag} variant="outlined"
-                                                     onDelete={() => onChipDeleteClick(c.tag)}
-                                                     color={c.exists ? 'success' : 'default'}/>;
-                                    })}</Grid>
+                                    <TextField sx={{m: 1}} id="standard-basic" label="Product Number" variant="standard"
+                                               value={productNumber} onChange={handleProductNumberChange}/>
+                                    <TextField sx={{m: 1}} id="standard-basic" label="Product Image" variant="standard"
+                                               value={image} onChange={handleProductImageChange}/>
+                                    <Grid item>
+                                        {chips.length > 0 && chips.map((c) => {
+                                            return <Chip key={c.tag} label={c.tag} variant="outlined"
+                                                         onDelete={() => onChipDeleteClick(c.tag)}
+                                                         color={c.exists ? 'success' : 'default'}/>;
+                                        })}
+                                    </Grid>
                                     <TextField sx={{m: 1}} id="standard-basic" label="Associate tags" variant="standard"
                                                value={tagInput} onChange={handleChangeTags} onKeyDown={validateInput}/>
                                 </Grid>
