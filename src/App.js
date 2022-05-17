@@ -14,17 +14,25 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import {Route, Routes, useNavigate} from 'react-router-dom';
-import {About, Device, Home, Location, NewLocation, Product, NewProduct} from './util/components';
+import {
+    About, Device, Home,
+    Location, NewLocation,
+    Product, NewProduct,
+} from './util/components';
 import {AppBarMenu, DrawerMenu, DrawerHeader} from './navigation/AppBarMenu';
+import {HomeRounded, Radar, Devices, LocationOn, Layers, WbIridescent} from '@mui/icons-material';
 
 export default function App() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
-    const pages = ['Home', 'Device', 'Location', 'Product']
+    const pages = [
+        {name: 'Home', icon: <HomeRounded/>},
+        {name: 'Device', icon: <LocationOn/>},
+        {name: 'Location', icon: <Radar/>},
+        {name: 'Product', icon: <WbIridescent/>},
+    ];
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -35,8 +43,8 @@ export default function App() {
     };
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
+        <Box sx={{display: 'flex'}}>
+            <CssBaseline/>
             <AppBarMenu position="fixed" open={open}>
                 <Toolbar>
                     <IconButton
@@ -46,10 +54,10 @@ export default function App() {
                         edge="start"
                         sx={{
                             marginRight: 5,
-                            ...(open && { display: 'none' }),
+                            ...(open && {display: 'none'}),
                         }}
                     >
-                        <MenuIcon />
+                        <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
                         Admin panel
@@ -59,13 +67,14 @@ export default function App() {
             <DrawerMenu variant="permanent" open={open}>
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                        {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
                     </IconButton>
                 </DrawerHeader>
-                <Divider />
+                <Divider/>
                 <List>
-                    {pages.map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }} onClick={() => navigate('/' + text.toLowerCase())} >
+                    {pages.map((t, index) => (
+                        <ListItem key={t.name} disablePadding sx={{display: 'block'}}
+                                  onClick={() => navigate('/' + t.name.toLowerCase())}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -80,18 +89,18 @@ export default function App() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                    {t.icon}
                                 </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={t.name} sx={{opacity: open ? 1 : 0}}/>
                             </ListItemButton>
                         </ListItem>
                     ))}
                 </List>
-                <Divider />
+                <Divider/>
                 <p> stuff</p>
             </DrawerMenu>
-            <Box component="main" sx={{ flexGrow: 1, pl: 1}}>
-                <DrawerHeader />
+            <Box component="main" sx={{flexGrow: 1, pl: 1}}>
+                <DrawerHeader/>
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/home" element={<Home/>}/>
