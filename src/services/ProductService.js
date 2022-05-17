@@ -23,18 +23,26 @@ function ProductService() { //TODO: provider in constructor
         return api.post(`${path}`, {
             name: data.name,
             tags: data.tags,
+            productNo: data.productNo,
+            image: data.image
         }).
             then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
+    //
+    // const update = (data) => {
+    //     return api.put(`${path}/${data.id}`, data).
+    //         then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
+    //         catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+    // };
 
-    const update = (data) => {
-        return api.put(`${path}/${data.id}`, data).
+    const updateTags = (id, tags) => {
+        return api.put(`${path}/${id}`, tags).
             then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
-    };
+    }
 
-    return {getAll, get, add, update};
+    return {getAll, get, add, updateTags};
 }
 
 function ProductServiceMock() {
@@ -64,11 +72,11 @@ function ProductServiceMock() {
         return {};
     };
 
-    const update = (location) => {
+    const updateTags = (id, tags) => {
         return {};
     };
 
-    return {getAll, get, add, update};
+    return {getAll, get, add, updateTags};
 }
 
 export default {ProductService, ProductServiceMock};
