@@ -102,9 +102,10 @@ export default function App(props) {
 
         return function cleanup() {
             eventManager.removeListener(eventManager.event().loggedIn, handleLoggedIn)
-            eventManager.removeListener(eventManager.event().loggedOut, handleLoggedIn)
+            eventManager.removeListener(eventManager.event().loggedOut, handleLoggedOut)
         };
     }, [])
+
 
 
     return (
@@ -165,29 +166,32 @@ export default function App(props) {
                     : null
                 }
                 <Divider/>
-                <ListItem key='Sign out' disablePadding sx={{display: 'block'}}
-                          onClick={() => eventManager.invoke(eventManager.event().logout)}>
-                    <ListItemButton
-                        sx={{
-                            minHeight: 48,
-                            justifyContent: open ? 'initial' : 'center',
-                            px: 2.5,
-                        }}
-                    >
-                        <ListItemIcon
+                { authorized ?
+                    <ListItem key='Sign out' disablePadding sx={{display: 'block'}}
+                              onClick={() => eventManager.invoke(eventManager.event().logout)}>
+                        <ListItemButton
                             sx={{
-                                minWidth: 0,
-                                ml: open ? 'auto' : 1,
-                                mr: open ? 3 : 'auto',
-                                justifyContent: 'center',
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
                             }}
                         >
-                            <LogoutIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary='Sign out' sx={{opacity: open ? 1 : 0}}/>
-                    </ListItemButton>
-                </ListItem>
-                <p> API {process.env['REACT_APP_USE_API'] === 'true' ? ' true' : ' false'}</p>
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    ml: open ? 'auto' : 1,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <LogoutIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary='Sign out' sx={{opacity: open ? 1 : 0}}/>
+                        </ListItemButton>
+                    </ListItem>
+                    : null
+                }
+                <Box marginLeft={2} >{process.env['REACT_APP_USE_API'] === 'true' ? 'API' : 'Mock'}</Box>
             </DrawerMenu>
             <Box component="main" sx={{flexGrow: 1, pl: 1}}>
                 <DrawerHeader/>
