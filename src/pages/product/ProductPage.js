@@ -3,14 +3,14 @@ import Typography from '@mui/material/Typography';
 import {useEffect} from 'react';
 import {Box, Button, Chip, Grid, IconButton} from '@mui/material';
 import ListComponent from '../../components/ListComponent';
-import ProductService from '../../services/ProductService';
 import {useNavigate} from 'react-router-dom';
 import AddChipsModalComponent from './AddChipsModalComponent';
 import DeleteChipModalComponent from './DeleteChipModalComponent';
 
-function ProductPage() {
+function ProductPage(props) {
 
-    const api = ProductService.ProductService();
+    const productApi = props.productService;
+    const tagApi = props.tagService;
 
     const [productList, setProductList] = React.useState([]);
     const [productDetails, setProductDetails] = React.useState(null);
@@ -19,14 +19,14 @@ function ProductPage() {
     const navigate = useNavigate();
 
     const listItemClickCallback = (data) => {
-        api.get(data.id).then((res, error) => {
+        productApi.get(data.id).then((res, error) => {
                 setProductDetails(res.data);
             },
         );
     };
 
     useEffect(() => {
-        api.getAll().then((res, err) => {
+        productApi.getAll().then((res, err) => {
             setProductList(res.data.map((x) => {
                 return {id: x.id, value: x.name};
             }));
@@ -43,7 +43,7 @@ function ProductPage() {
     };
 
     const updateProductDetails = () => {
-        api.get(productDetails.id).then((res, error) => {
+        productApi.get(productDetails.id).then((res, error) => {
                 setProductDetails(res.data);
             },
         );
@@ -87,7 +87,9 @@ function ProductPage() {
                                                              onDelete={() => onChipDeleteClick(c)}/>;
                                             }) : ''}
                                             <IconButton color="primary" aria-label="Add chip" component="span">
-                                                <AddChipsModalComponent product={productDetails}
+                                                <AddChipsModalComponent productService={productApi}
+                                                                        tagService={tagApi}
+                                                                        product={productDetails}
                                                                         callback={addChipCallback}/>
                                             </IconButton>
 
@@ -99,7 +101,8 @@ function ProductPage() {
                         </Box>
                     </Grid>
                 </Grid>
-                <DeleteChipModalComponent product={productDetails} chip={selectedChip}
+                <DeleteChipModalComponent tagService={tagApi}
+                                          product={productDetails} chip={selectedChip}
                                           open={openDeleteChipModal} setOpen={setOpenDeleteChipModal}
                                           callback={updateProductDetails}/>
             </main>

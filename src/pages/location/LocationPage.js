@@ -9,9 +9,10 @@ import ListComponent from '../../components/ListComponent';
 import LocationDeviceUpdateComponent from "./LocationDeviceUpdateComponent";
 import LocationProductUpdateComponent from "./LocationProductUpdateComponent";
 
-function LocationPage() {
+function LocationPage(props) {
     const params = useParams();
-    const apiLocation = LocationService.LocationService();
+    const apiLocation = props.locationService;
+    const apiDevice = props.deviceService;
     const [locationList, setLocationList] = React.useState([]);
     const [locationDetails, setLocationDetails] = React.useState();
     const [identificationDeviceUpdateModalOpen, setIdentificationDeviceUpdateModalOpen] = React.useState(false);

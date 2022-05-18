@@ -15,13 +15,12 @@ import LocationService from '../../services/LocationService';
 import DeviceService from '../../services/DeviceService';
 import {useNavigate} from "react-router-dom";
 
-function NewLocationPage() {
+function NewLocationPage(props) {
 
-    const locationApi = LocationService.LocationService();
-    const deviceApi = DeviceService.DeviceService();
-    // const productApi = ProductService.ProductService()
-    // const presentationApi = PresentationService.PresentationService();
-    const navigate = useNavigate();
+    const locationApi = props.locationService;
+    const deviceApi = props.deviceService;
+    // const productApi = props.ProductService;
+    // const presentationApi = props.PresentationService;
 
     const [locationName, setLocationName] = useState('');
     const [selectedProduct, setSelectedProduct] = useState('');

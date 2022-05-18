@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import {useEffect} from 'react';
 import {Checkbox, FormControlLabel, Grid} from '@mui/material';
-import TagService from '../../services/TagService';
 
 const style = {
     position: 'absolute',
@@ -21,7 +20,7 @@ const style = {
 
 function DeleteChipModalComponent(props) {
 
-    const tagApi = TagService.TagService();
+    const tagApi = props.tagService;
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);

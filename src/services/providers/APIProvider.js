@@ -1,11 +1,15 @@
 import axios from 'axios';
+import { useEffect }  from "react";
 
-axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+function APIProvider (configuration, eventManager) {
+    axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+    axios.defaults.baseURL = configuration.baseUrl;
 
-function APIProvider (baseUrl) {
-    const get = (path, headers, params={}) => axios
+    const setAccessToken = (jwt) => axios.defaults.headers.common = {'Authorization': `${configuration.AuthType} ${jwt}`};
+
+    const get = (path, headers = {}, params={}) => axios
     .get(
-        baseUrl + path,
+        path,
         {
             headers: headers,
             params: params
@@ -14,13 +18,13 @@ function APIProvider (baseUrl) {
 
     const post =  (path, body, headers={}) => axios({
         method: 'post',
-        url: baseUrl + path,
+        url: path,
         headers: headers,
         data: body
     })
 
-    const del = (path, headers) => axios
-    .delete(baseUrl + path,
+    const del = (path, headers = {}) => axios
+    .delete(path,
         {
             headers: headers
         }
@@ -28,10 +32,20 @@ function APIProvider (baseUrl) {
 
     const put = (path, body, headers={}) => axios({
         method: 'put',
-        url: baseUrl + path,
+        url: path,
         headers: headers,
         data: body
     })
+
+    useEffect(() => {
+        eventManager.addListener(eventManager.event().loggedIn, setAccessToken)
+        eventManager.addListener(eventManager.event().loggedOut, setAccessToken)
+
+        return function cleanup() {
+            eventManager.removeListener(eventManager.event().loggedIn, setAccessToken)
+            eventManager.removeListener(eventManager.event().loggedOut, setAccessToken)
+        };
+    }, [])
 
     return {
         get, post, del, put
