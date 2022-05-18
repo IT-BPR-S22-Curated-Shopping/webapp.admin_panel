@@ -1,10 +1,10 @@
 import {ServiceResponseObject} from './ServiceResponseObject';
 import ServiceResponseEnum from '../util/ServiceResponseEnum';
-import {BASE_URL} from '../util/constants';
+import {API_URL} from '../util/constants';
 import APIProvider from './providers/APIProvider';
 
 function LocationService() { //TODO: provider in constructor
-    const api = APIProvider(BASE_URL);
+    const api = APIProvider(API_URL);
     const path = '/location';
 
     const getAll = () => {
@@ -36,13 +36,26 @@ function LocationService() { //TODO: provider in constructor
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
+    const updateDevices = (id, devices) => {
+        return api.put(`${path}/${id}/devices`, devices)
+        .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+    };
+
+    const updateProduct = (id, product) => {
+        return api.put(`${path}/${id}/product`, product)
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+    };
+    
+
     const removeLocation = (id) => {
         return api.del(`${path}/${id}`).
             then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
-    return {getAll, get, addLocation, removeLocation, update};
+    return {getAll, get, addLocation, removeLocation, update, updateDevices};
 }
 
 function LocationServiceMock() {

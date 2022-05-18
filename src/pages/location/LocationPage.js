@@ -2,28 +2,28 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import {useEffect} from 'react';
 import {Box, Button, Grid} from '@mui/material';
-
 import LocationService from '../../services/LocationService';
-
 import ServiceResponseEnum from '../../util/ServiceResponseEnum';
 import {useNavigate, useParams} from 'react-router-dom';
-import DeviceService from '../../services/DeviceService';
 import ListComponent from '../../components/ListComponent';
+import LocationDeviceUpdateComponent from "./LocationDeviceUpdateComponent";
 
 function LocationPage() {
     const params = useParams();
-    const apiLocation = LocationService.LocationServiceMock();
-    const apiDevice = DeviceService.DeviceServiceMock();
+    const apiLocation = LocationService.LocationService();
     const [locationList, setLocationList] = React.useState([]);
     const [locationDetails, setLocationDetails] = React.useState();
+    const [identificationDeviceUpdateModalOpen, setIdentificationDeviceUpdateModalOpen] = React.useState(false);
     const navigate = useNavigate();
 
     const clickCallback = (data) => {
-        navigate('/location/' + data.id);
-        apiLocation.get(data.id).then((res, error) => {
-                setLocationDetails(res.data);
-            },
-        );
+        if (data.id !== undefined) {
+            navigate('/location/' + data.id);
+            apiLocation.get(data.id).then((res, error) => {
+                    setLocationDetails(res.data);
+                },
+            );
+        }
     };
 
     const handleAddLocationClick = () => {
@@ -44,13 +44,15 @@ function LocationPage() {
                     // something went wrong
                     console.log('could not find item in list');
                 }
-
             }
         });
     };
-
+    
+    const handleDeviceUpdateModalOpen = () => {
+        setIdentificationDeviceUpdateModalOpen(true);
+    }
     useEffect(() => {
-        if (params.id != null || params.id !== {}) {
+        if (params.id != null || params.id !== {} || params.id !== undefined) {
             clickCallback({id: params.id});
         }
 
@@ -66,7 +68,6 @@ function LocationPage() {
             <main>
                 <Grid container height={'93vh'}>
                     <Grid
-
                         item md={4} lg={2}
                         sx={{borderRight: 1}} height={'93vh'}
                         display="flex"
@@ -89,18 +90,18 @@ function LocationPage() {
                                     <div>
                                         <p>id: {locationDetails.id}</p>
                                         <p>name: {locationDetails.name}</p>
-                                        <p>presentation devices: {locationDetails.presentationDevices.map((x) => x.id).
-                                            toString()}</p>
+                                        <p>presentation devices: {locationDetails.presentationDevices != null ? locationDetails.presentationDevices.map((x) => x.id).
+                                        toString() : "No presentation devices currently set"}</p>
                                         <p>products: {locationDetails.product != null &&
                                         locationDetails.product.productNo
                                             ? locationDetails.product.productNo
-                                            : ''},
+                                            : 'No product currently set'},
                                             tags: {locationDetails.product != null && locationDetails.product.tags !=
                                             null
                                                 ? locationDetails.product.tags.map((x) => x.tag).toString()
-                                                : ''}
+                                                : 'N/A'}
                                         </p>
-                                        <p>devices: {locationDetails.trackingDevices.map((x) => x.name).toString()}</p>
+                                        <p>devices: {locationDetails.identificationDevices != null ? locationDetails.identificationDevices.map((x) => x.companyId + " - " + x.deviceId + " - " + x.deviceType) : "No identification devices currently set"}</p>
                                         <Button onClick={() => removeLocationClick(locationDetails)}>Remove
                                             location</Button>
                                     </div>
@@ -110,10 +111,12 @@ function LocationPage() {
                     <Grid item xs={4}
                           sx={{borderRight: 1}}>
                         <Box p={2}>
-                            <Button>Set device</Button>
+                            <Button onClick={handleDeviceUpdateModalOpen}>Set Identification Devices</Button>
                             <Button>Set presentation</Button>
                             <Button>Set product</Button>
                         </Box>
+                        <LocationDeviceUpdateComponent callback={clickCallback} open={identificationDeviceUpdateModalOpen} setOpen={setIdentificationDeviceUpdateModalOpen}/>
+                        
                     </Grid>
                 </Grid>
 

@@ -13,6 +13,7 @@ import {
 import {useEffect, useId, useState} from 'react';
 import LocationService from '../../services/LocationService';
 import DeviceService from '../../services/DeviceService';
+import {useNavigate} from "react-router-dom";
 
 function NewLocationPage() {
 
@@ -20,6 +21,7 @@ function NewLocationPage() {
     const deviceApi = DeviceService.DeviceService();
     // const productApi = ProductService.ProductService()
     // const presentationApi = PresentationService.PresentationService();
+    const navigate = useNavigate();
 
     const [locationName, setLocationName] = useState('');
     const [selectedProduct, setSelectedProduct] = useState('');
@@ -74,6 +76,11 @@ function NewLocationPage() {
         console.log('clear clicked');
         clearInput();
     };
+
+    const onCancelClick = () => {
+        clearInput();
+        navigate('/location');
+    }
 
 
     return (
@@ -162,6 +169,7 @@ function NewLocationPage() {
                                 <Grid container justifyContent={'space-around'}>
                                     <Button size="small" onClick={onSaveClick}>Save</Button>
                                     <Button size="small" onClick={onClearClick}>Clear</Button>
+                                    <Button size="small" onClick={onCancelClick}>Cancel</Button>
                                 </Grid>
 
                             </CardActions>

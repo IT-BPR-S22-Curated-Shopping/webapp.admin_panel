@@ -1,10 +1,10 @@
 import {ServiceResponseObject} from './ServiceResponseObject';
 import ServiceResponseEnum from '../util/ServiceResponseEnum';
-import {BASE_URL} from '../util/constants';
+import {API_URL} from '../util/constants';
 import APIProvider from './providers/APIProvider';
 
 function DeviceService() { //TODO: provider in constructor
-    const api = APIProvider(BASE_URL);
+    const api = APIProvider(API_URL);
     const path = '/device';
 
     const getAll = () => {
