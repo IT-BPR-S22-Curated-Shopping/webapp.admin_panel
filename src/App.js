@@ -34,10 +34,10 @@ import LocationService from './services/LocationService.js'
 import ProductService from './services/ProductService.js'
 import TagService from "./services/TagService.js";
 
-import DeviceServiceMock from "./Mocks/DeviceServiceMock.js";
-import LocationServiceMock from "./Mocks/LoacationServiceMock.js";
-import ProductServiceMock from "./Mocks/ProductServiceMock.js";
-import TagServiceMock from "./Mocks/TagServiceMock.js";
+import DeviceServiceMock from "./mocks/DeviceServiceMock.js";
+import LocationServiceMock from "./mocks/LoacationServiceMock.js";
+import ProductServiceMock from "./mocks/ProductServiceMock.js";
+import TagServiceMock from "./mocks/TagServiceMock.js";
 import {useEffect} from "react";
 
 export default function App(props) {

@@ -1,7 +1,7 @@
 import {render, fireEvent, act, screen} from '@testing-library/react';
 import AddChipsModalComponent from './AddChipsModalComponent';
-import TagServiceMock from '../../Mocks/TagServiceMock';
-import ProductServiceMock from '../../Mocks/ProductServiceMock';
+import TagServiceMock from '../../mocks/TagServiceMock';
+import ProductServiceMock from '../../mocks/ProductServiceMock';
 
 describe('test AddChipsModalComponent', () => {
     describe('if it renders ', () => {

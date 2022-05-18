@@ -1,6 +1,6 @@
 import {render, fireEvent, act, screen} from '@testing-library/react';
-import TagServiceMock from '../../Mocks/TagServiceMock';
-import ProductServiceMock from '../../Mocks/ProductServiceMock';
+import TagServiceMock from '../../mocks/TagServiceMock';
+import ProductServiceMock from '../../mocks/ProductServiceMock';
 import DeleteChipModalComponent from './DeleteChipModalComponent';
 
 describe('test AddChipsModalComponent', () => {

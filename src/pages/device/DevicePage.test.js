@@ -1,5 +1,5 @@
 import {render, fireEvent, act, screen} from '@testing-library/react';
-import DeviceServiceMock from '../../Mocks/DeviceServiceMock';
+import DeviceServiceMock from '../../mocks/DeviceServiceMock';
 import DevicePage from './DevicePage';
 
 describe('test DevicePage', () => {
