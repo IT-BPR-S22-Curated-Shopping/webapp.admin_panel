@@ -1,31 +1,27 @@
 import {useParams} from "react-router-dom";
 import LocationService from "../../services/LocationService";
-import DeviceService from "../../services/DeviceService";
+import ProductService from "../../services/ProductService";
 import * as React from "react";
 import {Box, Button, FormControl, Grid, InputLabel, MenuItem, Modal, Select} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useEffect} from "react";
 
 
-function LocationDeviceUpdateComponent(props) {
+function LocationProductUpdateComponent(props) {
     const params = useParams();
     const apiLocation = LocationService.LocationService();
-    const apiDevice = DeviceService.DeviceService();
-    const [deviceList, setDeviceList] = React.useState([]);
-    const [selectedDevices, setSelectedDevices] = React.useState([]);
+    const apiProduct = ProductService.ProductService();
+    const [productList, setProductList] = React.useState([]);
+    const [selectedProduct, setSelectedProduct] = React.useState('');
     const [modalOpen, setModalOpen] = React.useState(false);
 
-    const handleDeviceUpdateChange = (event) => {
-        const {
-            target: { value },
-        } = event;
-
-        setSelectedDevices( typeof value === 'string' ? value.split(',') : value);
+    const handleProductUpdateChange = (event) => {
+        setSelectedProduct(event.target.value);
     }
 
-    const handleDeviceUpdateSave = (newDevices) => {
+    const handleProductUpdateSave = (newProduct) => {
         if (params.id !== undefined) {
-            apiLocation.updateDevices(params.id, newDevices).then(res => {
+            apiLocation.updateProduct(params.id, newProduct).then(res => {
                 props.callback(params)
             });
         }
@@ -41,9 +37,9 @@ function LocationDeviceUpdateComponent(props) {
     }
 
     useEffect(() => {
-        setSelectedDevices([]);
-        apiDevice.getAll().then(res => {
-            setDeviceList(res.data);
+        setSelectedProduct('');
+        apiProduct.getAll().then(res => {
+            setProductList(res.data);
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -63,27 +59,26 @@ function LocationDeviceUpdateComponent(props) {
             >
                 <Box sx={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '30%', bgcolor: 'background.paper'}}>
                     <Typography id="modal-title" variant="h6" align="center">
-                        Select identification devices
+                        Select product
                     </Typography>
                     <FormControl variant="standard" sx={{width: '100%', p: 1}}>
-                        <InputLabel id="select-device" sx={{pl: 1}}>Devices</InputLabel>
+                        <InputLabel id="select-product" sx={{pl: 1}}>Products</InputLabel>
                         <Select
-                            multiple
-                            value={selectedDevices}
-                            onChange={handleDeviceUpdateChange}
+                            value={selectedProduct}
+                            onChange={handleProductUpdateChange}
                         >
-                            {deviceList.map(device => (
+                            {productList.map(product => (
                                 <MenuItem
-                                    key={device.id}
-                                    value={device}
+                                    key={product.id}
+                                    value={product}
                                 >
-                                    {device.companyId} - {device.deviceId} - {device.deviceType}
+                                    {product.id} - {product.productNo} - {product.name}
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
                     <Grid container justifyContent={'space-around'} mt={2} mb={1}>
-                        <Button size="medium" onClick={() => handleDeviceUpdateSave(selectedDevices)}> Save </Button>
+                        <Button size="medium" onClick={() => handleProductUpdateSave(selectedProduct)}> Save </Button>
                         <Button size="medium" onClick={handleModalClose}>Cancel</Button>
                     </Grid>
                 </Box>
@@ -92,4 +87,4 @@ function LocationDeviceUpdateComponent(props) {
     );
 }
 
-export default LocationDeviceUpdateComponent;
+export default LocationProductUpdateComponent;

@@ -55,7 +55,7 @@ function LocationService() { //TODO: provider in constructor
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
-    return {getAll, get, addLocation, removeLocation, update, updateDevices};
+    return {getAll, get, addLocation, removeLocation, update, updateDevices, updateProduct};
 }
 
 function LocationServiceMock() {

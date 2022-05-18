@@ -7,6 +7,7 @@ import ServiceResponseEnum from '../../util/ServiceResponseEnum';
 import {useNavigate, useParams} from 'react-router-dom';
 import ListComponent from '../../components/ListComponent';
 import LocationDeviceUpdateComponent from "./LocationDeviceUpdateComponent";
+import LocationProductUpdateComponent from "./LocationProductUpdateComponent";
 
 function LocationPage() {
     const params = useParams();
@@ -14,6 +15,7 @@ function LocationPage() {
     const [locationList, setLocationList] = React.useState([]);
     const [locationDetails, setLocationDetails] = React.useState();
     const [identificationDeviceUpdateModalOpen, setIdentificationDeviceUpdateModalOpen] = React.useState(false);
+    const [productUpdateModalOpen, setProductUpdateModalOpen] = React.useState(false);
     const navigate = useNavigate();
 
     const clickCallback = (data) => {
@@ -51,6 +53,11 @@ function LocationPage() {
     const handleDeviceUpdateModalOpen = () => {
         setIdentificationDeviceUpdateModalOpen(true);
     }
+
+    const handleProductUpdateModalOpen = () => {
+        setProductUpdateModalOpen(true);
+    }
+
     useEffect(() => {
         if (params.id != null || params.id !== {} || params.id !== undefined) {
             clickCallback({id: params.id});
@@ -113,10 +120,10 @@ function LocationPage() {
                         <Box p={2}>
                             <Button onClick={handleDeviceUpdateModalOpen}>Set Identification Devices</Button>
                             <Button>Set presentation</Button>
-                            <Button>Set product</Button>
+                            <Button onClick={handleProductUpdateModalOpen}>Set product</Button>
                         </Box>
                         <LocationDeviceUpdateComponent callback={clickCallback} open={identificationDeviceUpdateModalOpen} setOpen={setIdentificationDeviceUpdateModalOpen}/>
-                        
+                        <LocationProductUpdateComponent callback={clickCallback} open={productUpdateModalOpen} setOpen={setProductUpdateModalOpen} />
                     </Grid>
                 </Grid>
 
