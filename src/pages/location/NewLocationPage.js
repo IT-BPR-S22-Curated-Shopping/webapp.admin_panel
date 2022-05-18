@@ -68,12 +68,10 @@ function NewLocationPage() {
     };
 
     const onSaveClick = () => {
-        console.log('save clicked');
         clearInput();
     };
 
     const onClearClick = () => {
-        console.log('clear clicked');
         clearInput();
     };
 
