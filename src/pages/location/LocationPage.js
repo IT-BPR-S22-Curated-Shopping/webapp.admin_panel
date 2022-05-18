@@ -102,7 +102,7 @@ function LocationPage(props) {
                                         toString() : "No presentation devices currently set"}</p>
                                         <p>products: {locationDetails.product != null &&
                                         locationDetails.product.productNo
-                                            ? locationDetails.product.productNo
+                                            ? (locationDetails.product.productNo + " - " + locationDetails.product.name)
                                             : 'No product currently set'},
                                             tags: {locationDetails.product != null && locationDetails.product.tags !=
                                             null
