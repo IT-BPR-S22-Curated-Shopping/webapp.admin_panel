@@ -1,6 +1,4 @@
 import {useParams} from "react-router-dom";
-import LocationService from "../../services/LocationService";
-import DeviceService from "../../services/DeviceService";
 import * as React from "react";
 import {Box, Button, FormControl, Grid, InputLabel, MenuItem, Modal, Select} from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -9,8 +7,8 @@ import {useEffect} from "react";
 
 function LocationDeviceUpdateComponent(props) {
     const params = useParams();
-    const apiLocation = LocationService.LocationService();
-    const apiDevice = DeviceService.DeviceService();
+    const apiLocation = props.locationApi;
+    const apiDevice = props.deviceApi;
     const [deviceList, setDeviceList] = React.useState([]);
     const [selectedDevices, setSelectedDevices] = React.useState([]);
     const [modalOpen, setModalOpen] = React.useState(false);
@@ -41,17 +39,14 @@ function LocationDeviceUpdateComponent(props) {
     }
 
     useEffect(() => {
-        setSelectedDevices([]);
-        apiDevice.getAll().then(res => {
-            setDeviceList(res.data);
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    useEffect(() => {
         if (props.open === true) {
+            setSelectedDevices([]);
+            apiDevice.getAll().then(res => {
+                setDeviceList(res.data);
+            })
             handleModalOpen()
         }
+
     }, [props.open])
 
     return (

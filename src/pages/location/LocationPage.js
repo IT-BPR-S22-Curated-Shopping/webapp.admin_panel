@@ -2,7 +2,6 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import {useEffect} from 'react';
 import {Box, Button, Grid} from '@mui/material';
-import LocationService from '../../services/LocationService';
 import ServiceResponseEnum from '../../util/ServiceResponseEnum';
 import {useNavigate, useParams} from 'react-router-dom';
 import ListComponent from '../../components/ListComponent';
@@ -11,8 +10,9 @@ import LocationProductUpdateComponent from "./LocationProductUpdateComponent";
 
 function LocationPage(props) {
     const params = useParams();
-    const apiLocation = props.locationService;
-    const apiDevice = props.deviceService;
+    const locationApi = props.locationService;
+    const productApi = props.productService;
+    const deviceApi = props.deviceService;
     const [locationList, setLocationList] = React.useState([]);
     const [locationDetails, setLocationDetails] = React.useState();
     const [identificationDeviceUpdateModalOpen, setIdentificationDeviceUpdateModalOpen] = React.useState(false);
@@ -22,7 +22,7 @@ function LocationPage(props) {
     const clickCallback = (data) => {
         if (data.id !== undefined) {
             navigate('/location/' + data.id);
-            apiLocation.get(data.id).then((res, error) => {
+            locationApi.get(data.id).then((res, error) => {
                     setLocationDetails(res.data);
                 },
             );
@@ -34,7 +34,7 @@ function LocationPage(props) {
     };
 
     const removeLocationClick = (location) => {
-        apiLocation.removeLocation(location.id).then((res) => {
+        locationApi.removeLocation(location.id).then((res) => {
             if (res.state === ServiceResponseEnum.SUCCESS) {
                 let index = locationList.findIndex(x => x.id === location.id);
                 if (index > -1) {
@@ -64,7 +64,7 @@ function LocationPage(props) {
             clickCallback({id: params.id});
         }
 
-        apiLocation.getAll().then((res, err) => {
+        locationApi.getAll().then((res, err) => {
             setLocationList(res.data.map((x) => {
                 return {id: x.id, value: x.name};
             }));
@@ -123,8 +123,8 @@ function LocationPage(props) {
                             <Button>Set presentation</Button>
                             <Button onClick={handleProductUpdateModalOpen}>Set product</Button>
                         </Box>
-                        <LocationDeviceUpdateComponent callback={clickCallback} open={identificationDeviceUpdateModalOpen} setOpen={setIdentificationDeviceUpdateModalOpen}/>
-                        <LocationProductUpdateComponent callback={clickCallback} open={productUpdateModalOpen} setOpen={setProductUpdateModalOpen} />
+                        <LocationDeviceUpdateComponent locationApi={locationApi} deviceApi={deviceApi} callback={clickCallback}  open={identificationDeviceUpdateModalOpen} setOpen={setIdentificationDeviceUpdateModalOpen}/>
+                        <LocationProductUpdateComponent locationApi={locationApi} productApi={productApi} callback={clickCallback} open={productUpdateModalOpen} setOpen={setProductUpdateModalOpen} />
                     </Grid>
                 </Grid>
 

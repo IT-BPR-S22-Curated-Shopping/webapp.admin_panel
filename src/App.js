@@ -206,10 +206,12 @@ export default function App(props) {
                         <Route path="/location" element={
                             <Location deviceService={deviceService}
                                       locationService={locationService}
+                                      productService={productService}
                             />}/>
                         <Route path="/location/:id" element={
                             <Location deviceService={deviceService}
                                       locationService={locationService}
+                                      productService={productService}
                             />}/>
                         <Route path="/location/new" element={
                             <NewLocation deviceService={deviceService}

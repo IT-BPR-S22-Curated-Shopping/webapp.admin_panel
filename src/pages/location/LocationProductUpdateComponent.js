@@ -1,6 +1,4 @@
 import {useParams} from "react-router-dom";
-import LocationService from "../../services/LocationService";
-import ProductService from "../../services/ProductService";
 import * as React from "react";
 import {Box, Button, FormControl, Grid, InputLabel, MenuItem, Modal, Select} from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -9,8 +7,8 @@ import {useEffect} from "react";
 
 function LocationProductUpdateComponent(props) {
     const params = useParams();
-    const apiLocation = LocationService.LocationService();
-    const apiProduct = ProductService.ProductService();
+    const apiLocation = props.locationApi;
+    const apiProduct = props.productApi;
     const [productList, setProductList] = React.useState([]);
     const [selectedProduct, setSelectedProduct] = React.useState('');
     const [modalOpen, setModalOpen] = React.useState(false);
@@ -21,7 +19,7 @@ function LocationProductUpdateComponent(props) {
 
     const handleProductUpdateSave = (newProduct) => {
         if (params.id !== undefined) {
-            apiLocation.updateProduct(params.id, newProduct).then(res => {
+            apiLocation.updateProduct(params.id, newProduct).then(() => {
                 props.callback(params)
             });
         }
@@ -37,15 +35,11 @@ function LocationProductUpdateComponent(props) {
     }
 
     useEffect(() => {
-        setSelectedProduct('');
-        apiProduct.getAll().then(res => {
-            setProductList(res.data);
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    useEffect(() => {
         if (props.open === true) {
+            setSelectedProduct('');
+            apiProduct.getAll().then(res => {
+                setProductList(res.data);
+            })
             handleModalOpen()
         }
     }, [props.open])

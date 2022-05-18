@@ -10,10 +10,7 @@ import {
     TextField,
 
 } from '@mui/material';
-import {useEffect, useId, useState} from 'react';
-import LocationService from '../../services/LocationService';
-import DeviceService from '../../services/DeviceService';
-import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from 'react';
 
 function NewLocationPage(props) {
 
@@ -74,11 +71,6 @@ function NewLocationPage(props) {
         clearInput();
     };
 
-    const onCancelClick = () => {
-        clearInput();
-        navigate('/location');
-    }
-
 
     return (
         <React.Fragment>
@@ -114,9 +106,9 @@ function NewLocationPage(props) {
                                             </MenuItem>
                                             {
                                                 products?.length > 0 &&
-                                                    products.map(x => {
-                                                        return (<MenuItem key={"product_" + x.id} value={x.id}>{x.id}</MenuItem>)
-                                                    })
+                                                products.map(x => {
+                                                    return (<MenuItem key={"product_" + x.id} value={x.id}>{x.id}</MenuItem>)
+                                                })
                                             }
                                         </Select>
                                     </FormControl>
@@ -166,7 +158,6 @@ function NewLocationPage(props) {
                                 <Grid container justifyContent={'space-around'}>
                                     <Button size="small" onClick={onSaveClick}>Save</Button>
                                     <Button size="small" onClick={onClearClick}>Clear</Button>
-                                    <Button size="small" onClick={onCancelClick}>Cancel</Button>
                                 </Grid>
 
                             </CardActions>
