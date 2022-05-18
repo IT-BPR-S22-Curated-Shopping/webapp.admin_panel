@@ -118,6 +118,7 @@ function Login(props) {
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                     <TextField
+                        inputProps={{ "data-testid": "textField-email" }}
                         value={emailValue}
                         error={emailError}
                         helperText={emailErrorMsg}
@@ -132,6 +133,7 @@ function Login(props) {
                         onChange={(e)=>{ updateEmail(e.target.value)}}
                     />
                     <TextField
+                        inputProps={{ "data-testid": "textField-password" }}
                         value={pwValue}
                         error={pwError}
                         helperText={pwErrorMsg}

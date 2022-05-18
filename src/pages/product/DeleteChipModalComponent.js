@@ -74,6 +74,7 @@ function DeleteChipModalComponent(props) {
 
                     <FormControlLabel sx={{m: 1}} control={
                         <Checkbox
+                            data-testid={"confirm_checkbox"}
                             checked={checked}
                             onChange={onCheckboxChanged}
                             inputProps={{'aria-label': 'controlled'}}

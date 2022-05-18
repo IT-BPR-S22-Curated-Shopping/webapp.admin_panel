@@ -85,9 +85,9 @@ function LocationPage(props) {
                                     <div>
                                         <p>id: {locationDetails.id}</p>
                                         <p>name: {locationDetails.name}</p>
-                                        <p>presentation devices: {locationDetails.presentationDevices.map((x) => x.id).
+                                        <p>presentation devices: {locationDetails.presentationDevices && locationDetails.presentationDevices.map((x) => x.id).
                                             toString()}</p>
-                                        <p>products: {locationDetails.product != null &&
+                                        <p>products: {locationDetails.product &&
                                         locationDetails.product.productNo
                                             ? locationDetails.product.productNo
                                             : ''},
@@ -96,7 +96,7 @@ function LocationPage(props) {
                                                 ? locationDetails.product.tags.map((x) => x.tag).toString()
                                                 : ''}
                                         </p>
-                                        <p>devices: {locationDetails.trackingDevices.map((x) => x.name).toString()}</p>
+                                        <p>devices: {locationDetails.trackingDevices && locationDetails.trackingDevices.map((x) => x.name).toString()}</p>
                                         <Button onClick={() => removeLocationClick(locationDetails)}>Remove
                                             location</Button>
                                     </div>

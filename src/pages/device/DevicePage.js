@@ -7,18 +7,17 @@ import DeviceLogComponent from './DeviceLogComponent';
 
 function DevicePage(props) {
     const api = props.deviceService;
-    const locationApi = props.locationService;
 
     const [deviceList, setDeviceList] = React.useState([]);
     const [deviceDetails, setDeviceDetails] = React.useState(null);
 
     const deviceClickCallback = (data) => {
         api.get(data.id).then((res, error) => {
+                console.log(res.data);
                 setDeviceDetails(res.data);
             },
         );
     };
-
 
     useEffect(() => {
         api.getAll().then((res, err) => {

@@ -32,9 +32,6 @@ function AddChipsModalComponent(props) {
         })
     }, [])
 
-    useEffect(() => {
-    }, [props.callback])
-
 
     useEffect(() => {
         tagApi.getAll().then((res, error) => {
@@ -98,7 +95,7 @@ function AddChipsModalComponent(props) {
 
     return (
         <Box display={'flex'} justifyContent={'center'}>
-            <AddCircleOutlineOutlined onClick={handleOpen}/>
+            <AddCircleOutlineOutlined onClick={handleOpen} data-testid="addChipId"/>
             <Modal
                 open={open}
                 onClose={handleClose}

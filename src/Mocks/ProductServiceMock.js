@@ -18,7 +18,7 @@ function ProductServiceMock() {
     const get = (id) => {
         return new Promise((resolve, reject) => {
             let res = ServiceResponseObject(ServiceResponseEnum.SUCCESS,
-                {name: 'Product 1', id: 1, tags: [{id: 1, tag: 'tag1'}, {id: 2, tag: 'tag2'}, {id: 3, tag: 'tag3'}]},
+                {name: `Product ${id}`, id: {id}, tags: [{id: 1, tag: 'tag1'}, {id: 2, tag: 'tag2'}, {id: 3, tag: 'tag3'}]},
             );
             resolve(res);
         });
