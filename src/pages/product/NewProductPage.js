@@ -115,10 +115,13 @@ function NewProductPage(props) {
                             <CardContent>
                                 <Grid container flexDirection={'column'}>
                                     <TextField sx={{m: 1}} id="standard-basic" label="Name" variant="standard"
+                                               inputProps={{ "data-testid": "textField-product-name" }}
                                                value={name} onChange={handleChangeName} onKeyDown={validateInput}/>
                                     <TextField sx={{m: 1}} id="standard-basic" label="Product Number" variant="standard"
+                                               inputProps={{ "data-testid": "textField-product-number" }}
                                                value={productNumber} onChange={handleProductNumberChange}/>
                                     <TextField sx={{m: 1}} id="standard-basic" label="Product Image" variant="standard"
+                                               inputProps={{ "data-testid": "textField-product-image" }}
                                                value={image} onChange={handleProductImageChange}/>
                                     <Grid item>
                                         {chips.length > 0 && chips.map((c) => {

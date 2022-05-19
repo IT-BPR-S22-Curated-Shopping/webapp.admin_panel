@@ -24,8 +24,8 @@ function ProductServiceMock() {
         });
     };
 
-    const add = (name) => {
-        return {};
+    const add = (data) => {
+        return new Promise((resolve, reject) => {});
     };
 
     const updateTags = (id, tags) => {

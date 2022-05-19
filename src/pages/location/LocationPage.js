@@ -64,7 +64,7 @@ function LocationPage(props) {
             clickCallback({id: params.id});
         }
 
-        locationApi.getAll().then((res, err) => {
+        locationApi?.getAll().then((res, err) => {
             setLocationList(res.data.map((x) => {
                 return {id: x.id, value: x.name};
             }));

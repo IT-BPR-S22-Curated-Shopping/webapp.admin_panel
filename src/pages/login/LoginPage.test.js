@@ -1,7 +1,6 @@
 import {render, fireEvent, act, screen} from '@testing-library/react';
 import LoginPage from './login';
 import EventManager from '../../managers/events/EventManager';
-import {event} from '../../managers/events/Event';
 
 describe('test LoginPage', () => {
     describe('if it renders ', () => {
@@ -22,7 +21,6 @@ describe('test LoginPage', () => {
             // assert
             expect(ex).toBeFalsy();
         });
-
         it('should contain elements', async () => {
             // Arrange
             let manager = new EventManager();
@@ -35,7 +33,6 @@ describe('test LoginPage', () => {
             let passwordLabels = screen.getAllByText("Password")
             let signInButton = screen.getByRole("button")
 
-
             // assert
             expect(signInTexts.length).toBe(2)
             expect(emailLabels.length).toBe(1)
@@ -43,10 +40,11 @@ describe('test LoginPage', () => {
             expect(signInButton).toBeTruthy()
             expect(signInButton).toHaveTextContent("Sign In")
         });
-
-        it('should fire event on button click', async () => {
+    });
+    describe('On sign in button click', () => {
+        it('correct email/pw should fire event on button click', async () => {
             // Arrange
-            let manager = new EventManager(event);
+            let manager = new EventManager();
             let spyManager = jest.spyOn(manager, 'invoke')
 
             // act
@@ -59,10 +57,119 @@ describe('test LoginPage', () => {
             fireEvent.change(passwordInput, {target: {value: '1test2!'}})
             fireEvent.click(signInButton);
 
-
             // assert
             expect(spyManager).toHaveBeenCalled()
-            expect(spyManager).toHaveBeenCalledWith(event.login, {"email": "test@test.dk", "password": "1test2!"})
+            expect(spyManager).toHaveBeenCalledWith(manager.event.login, {"email": "test@test.dk", "password": "1test2!"})
+        })
+        it('empty email entered should not fire event on button click', async () => {
+            // Arrange
+            let manager = new EventManager();
+            let spyManager = jest.spyOn(manager, 'invoke')
+
+            // act
+            await act(async () => render(<LoginPage eventManager={manager}/>));
+            let signInButton = screen.getByRole("button")
+            let passwordInput = screen.getByTestId("textField-password")
+
+            fireEvent.change(passwordInput, {target: {value: '1test2!'}})
+            fireEvent.click(signInButton);
+
+            // assert
+            expect(spyManager).not.toHaveBeenCalled()
+            expect(spyManager).not.toHaveBeenCalledWith(manager.event.login, {"email": "", "password": "1test2!"})
+        })
+        it('empty pw should not fire event on button click', async () => {
+            // Arrange
+            let manager = new EventManager();
+            let spyManager = jest.spyOn(manager, 'invoke')
+
+            // act
+            await act(async () => render(<LoginPage eventManager={manager}/>));
+            let signInButton = screen.getByRole("button")
+            let emailInput = screen.getByTestId("textField-email")
+
+            fireEvent.change(emailInput, {target: {value: 'test@test.dk'}})
+            fireEvent.click(signInButton);
+
+            // assert
+            expect(spyManager).not.toHaveBeenCalled()
+            expect(spyManager).not.toHaveBeenCalledWith(manager.event.login, {"email": "test@test.dk", "password": ""})
+        })
+        it('Incorrect email format - no domain - should fire event on button click', async () => {
+            // Arrange
+            let manager = new EventManager();
+            let spyManager = jest.spyOn(manager, 'invoke')
+
+            // act
+            await act(async () => render(<LoginPage eventManager={manager}/>));
+            let signInButton = screen.getByRole("button")
+            let emailInput = screen.getByTestId("textField-email")
+            let passwordInput = screen.getByTestId("textField-password")
+
+            fireEvent.change(emailInput, {target: {value: 'test@'}})
+            fireEvent.change(passwordInput, {target: {value: '1test2!'}})
+            fireEvent.click(signInButton);
+
+            // assert
+            expect(spyManager).not.toHaveBeenCalled()
+            expect(spyManager).not.toHaveBeenCalledWith(manager.event.login, {"email": "test@", "password": "1test2!"})
+        })
+        it('Incorrect email format - no tdl - should fire event on button click', async () => {
+            // Arrange
+            let manager = new EventManager();
+            let spyManager = jest.spyOn(manager, 'invoke')
+
+            // act
+            await act(async () => render(<LoginPage eventManager={manager}/>));
+            let signInButton = screen.getByRole("button")
+            let emailInput = screen.getByTestId("textField-email")
+            let passwordInput = screen.getByTestId("textField-password")
+
+            fireEvent.change(emailInput, {target: {value: 'test@test'}})
+            fireEvent.change(passwordInput, {target: {value: '1test2!'}})
+            fireEvent.click(signInButton);
+
+            // assert
+            expect(spyManager).not.toHaveBeenCalled()
+            expect(spyManager).not.toHaveBeenCalledWith(manager.event.login, {"email": "test@test", "password": "1test2!"})
+        })
+        it('Incorrect email format - no @ - should fire event on button click', async () => {
+            // Arrange
+            let manager = new EventManager();
+            let spyManager = jest.spyOn(manager, 'invoke')
+
+            // act
+            await act(async () => render(<LoginPage eventManager={manager}/>));
+            let signInButton = screen.getByRole("button")
+            let emailInput = screen.getByTestId("textField-email")
+            let passwordInput = screen.getByTestId("textField-password")
+
+            fireEvent.change(emailInput, {target: {value: 'testtest.dk'}})
+            fireEvent.change(passwordInput, {target: {value: '1test2!'}})
+            fireEvent.click(signInButton);
+
+            // assert
+            expect(spyManager).not.toHaveBeenCalled()
+            expect(spyManager).not.toHaveBeenCalledWith(manager.event.login, {"email": "testtest.dk", "password": "1test2!"})
+        })
+        it('Incorrect email format - no username - should fire event on button click', async () => {
+            // Arrange
+            let manager = new EventManager();
+            let spyManager = jest.spyOn(manager, 'invoke')
+
+            // act
+            await act(async () => render(<LoginPage eventManager={manager}/>));
+            let signInButton = screen.getByRole("button")
+            let emailInput = screen.getByTestId("textField-email")
+            let passwordInput = screen.getByTestId("textField-password")
+
+            fireEvent.change(emailInput, {target: {value: '@test.dk'}})
+            fireEvent.change(passwordInput, {target: {value: '1test2!'}})
+            fireEvent.click(signInButton);
+
+            // assert
+            expect(spyManager).not.toHaveBeenCalled()
+            expect(spyManager).not.toHaveBeenCalledWith(manager.event.login, {"email": "@test.dk", "password": "1test2!"})
         })
     });
 });

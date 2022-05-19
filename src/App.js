@@ -25,25 +25,25 @@ import {AppBarMenu, DrawerMenu, DrawerHeader} from './navigation/AppBarMenu';
 import {HomeRounded, Radar, Devices, LocationOn, Layers, WbIridescent} from '@mui/icons-material';
 import Login from './pages/login/login';
 
-import { firebaseConfiguration } from './configuration/FirebaseConfiguration.js';
+import {firebaseConfiguration} from './configuration/FirebaseConfiguration.js';
 import AuthService from './services/AuthService.js';
-import { axiosConfiguration } from "./configuration/AxiosConfiguration.js";
-import APIProvider from './services/providers/APIProvider.js'
-import DeviceService from './services/DeviceService.js'
-import LocationService from './services/LocationService.js'
-import ProductService from './services/ProductService.js'
-import TagService from "./services/TagService.js";
+import {axiosConfiguration} from './configuration/AxiosConfiguration.js';
+import APIProvider from './services/providers/APIProvider.js';
+import DeviceService from './services/DeviceService.js';
+import LocationService from './services/LocationService.js';
+import ProductService from './services/ProductService.js';
+import TagService from './services/TagService.js';
 
-import DeviceServiceMock from "./mocks/DeviceServiceMock.js";
-import LocationServiceMock from "./mocks/LoacationServiceMock.js";
-import ProductServiceMock from "./mocks/ProductServiceMock.js";
-import TagServiceMock from "./mocks/TagServiceMock.js";
-import {useEffect} from "react";
+import DeviceServiceMock from './mocks/DeviceServiceMock.js';
+import LocationServiceMock from './mocks/LoacationServiceMock.js';
+import ProductServiceMock from './mocks/ProductServiceMock.js';
+import TagServiceMock from './mocks/TagServiceMock.js';
+import {useEffect} from 'react';
 
 export default function App(props) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const [authorized, setAuthorized] = React.useState(false)
+    const [authorized, setAuthorized] = React.useState(false);
     const navigate = useNavigate();
     const pages = [
         {name: 'Home', icon: <HomeRounded/>},
@@ -61,14 +61,13 @@ export default function App(props) {
     let tagService;
 
     if (process.env['REACT_APP_USE_API'] === 'true') {
-        console.log('Using API')
+        console.log('Using API');
         deviceService = DeviceService(apiProvider);
         locationService = LocationService(apiProvider);
         productService = ProductService(apiProvider);
         tagService = TagService(apiProvider);
-    }
-    else {
-        console.log("Using mocked services")
+    } else {
+        console.log('Using mocked services');
         deviceService = DeviceServiceMock();
         locationService = LocationServiceMock();
         productService = ProductServiceMock();
@@ -88,56 +87,54 @@ export default function App(props) {
 
     const handleLoggedIn = () => {
         updateAuthorized(true);
-        navigate("/home");
-    }
+        navigate('/home');
+    };
 
     const handleLoggedOut = () => {
         updateAuthorized(false);
-        navigate("/");
-    }
+        navigate('/');
+    };
 
     useEffect(() => {
-        eventManager.addListener(eventManager.event().loggedIn, handleLoggedIn)
-        eventManager.addListener(eventManager.event().loggedOut, handleLoggedOut)
+        eventManager.addListener(eventManager.event.loggedIn, handleLoggedIn);
+        eventManager.addListener(eventManager.event.loggedOut, handleLoggedOut);
 
         return function cleanup() {
-            eventManager.removeListener(eventManager.event().loggedIn, handleLoggedIn)
-            eventManager.removeListener(eventManager.event().loggedOut, handleLoggedOut)
+            eventManager.removeListener(eventManager.event.loggedIn, handleLoggedIn);
+            eventManager.removeListener(eventManager.event.loggedOut, handleLoggedOut);
         };
-    }, [])
-
-
+    }, []);
 
     return (
         <Box sx={{display: 'flex'}}>
             <CssBaseline/>
-                <AppBarMenu position="fixed" open={open}>
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            sx={{
-                                marginRight: 5,
-                                ...(open && {display: 'none'}),
-                            }}
-                        >
-                            <MenuIcon/>
-                        </IconButton>
-                        <Typography variant="h6" noWrap component="div">
-                            Curated Shopping Admin
-                        </Typography>
-                    </Toolbar>
-                </AppBarMenu>
-            <DrawerMenu variant="permanent" open={open} >
+            <AppBarMenu position="fixed" open={open}>
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        sx={{
+                            marginRight: 5,
+                            ...(open && {display: 'none'}),
+                        }}
+                    >
+                        <MenuIcon/>
+                    </IconButton>
+                    <Typography variant="h6" noWrap component="div">
+                        Curated Shopping Admin
+                    </Typography>
+                </Toolbar>
+            </AppBarMenu>
+            <DrawerMenu variant="permanent" open={open}>
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
                     </IconButton>
                 </DrawerHeader>
                 <Divider/>
-                { authorized ?
+                {authorized ?
                     <List>
                         {pages.map((t, index) => (
                             <ListItem key={t.name} disablePadding sx={{display: 'block'}}
@@ -166,8 +163,8 @@ export default function App(props) {
                     : null
                 }
                 <Divider/>
-                { authorized ?
-                    <ListItem key='Sign out' disablePadding sx={{display: 'block'}}
+                {authorized ?
+                    <ListItem key="Sign out" disablePadding sx={{display: 'block'}}
                               onClick={() => eventManager.invoke(eventManager.event().logout)}>
                         <ListItemButton
                             sx={{
@@ -186,16 +183,16 @@ export default function App(props) {
                             >
                                 <LogoutIcon/>
                             </ListItemIcon>
-                            <ListItemText primary='Sign out' sx={{opacity: open ? 1 : 0}}/>
+                            <ListItemText primary="Sign out" sx={{opacity: open ? 1 : 0}}/>
                         </ListItemButton>
                     </ListItem>
                     : null
                 }
-                <Box marginLeft={2} >{process.env['REACT_APP_USE_API'] === 'true' ? 'API' : 'Mock'}</Box>
+                <Box marginLeft={2}>{process.env['REACT_APP_USE_API'] === 'true' ? 'API' : 'Mock'}</Box>
             </DrawerMenu>
             <Box component="main" sx={{flexGrow: 1, pl: 1}}>
                 <DrawerHeader/>
-                { authorized ?
+                {authorized ?
                     <Routes>
                         <Route path="/home" element={
                             <Home

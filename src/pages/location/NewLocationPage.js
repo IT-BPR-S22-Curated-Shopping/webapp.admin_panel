@@ -64,6 +64,7 @@ function NewLocationPage(props) {
     };
 
     const onSaveClick = () => {
+        locationApi.addLocation()
         clearInput();
     };
 
@@ -91,6 +92,7 @@ function NewLocationPage(props) {
                             <CardContent>
                                 <Grid container flexDirection={'column'}>
                                     <TextField sx={{m: 1}} id="standard-basic" label="Location name" variant="standard"
+                                               inputProps={{ "data-testid": "textField-location-name" }}
                                                value={locationName} onChange={handleChangeLocationName}/>
                                     <FormControl variant="standard" sx={{m: 1}}>
                                         <InputLabel id="select-product">Product</InputLabel>
