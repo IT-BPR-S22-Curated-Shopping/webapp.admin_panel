@@ -27,7 +27,7 @@ function ListComponent(props) {
         <Grid container>
             <Grid item xs={12}>
                 <List dense={dense}>
-                    {list.map(x => (
+                    {list?.length > 0 && list.map(x => (
                         <ListItemButton
                             key={x.id}
                             selected={selectedIndex === list.indexOf(x)}

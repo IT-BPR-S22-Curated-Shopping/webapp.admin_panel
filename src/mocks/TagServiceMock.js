@@ -19,7 +19,7 @@ function TagServiceMock() {
         return data;
     };
     const remove = (id) => {
-
+        return new Promise((resolve, reject) => {})
     }
 
     return {getAll, add, remove};

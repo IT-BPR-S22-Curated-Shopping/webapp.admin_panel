@@ -24,10 +24,9 @@ function DeviceListComponent(props) {
     }, [props.listData]);
 
     return (
-        <div>
-            <Box>
-                <Grid container spacing={2}>
-                    <Grid>
+
+                <Grid container>
+                    <Grid item xs={12}>
                         <List dense={dense}>
                             {deviceList.map(x => (
                                 <ListItemButton
@@ -56,8 +55,7 @@ function DeviceListComponent(props) {
 
                     </Grid>
                 </Grid>
-            </Box>
-        </div>
+
     );
 }
 
