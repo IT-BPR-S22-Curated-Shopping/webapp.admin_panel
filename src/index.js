@@ -4,7 +4,6 @@ import {BrowserRouter} from 'react-router-dom';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {blueGrey} from '@mui/material/colors';
 import EventManager from "./managers/events/EventManager";
-import {event} from "./managers/events/Event";
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -19,7 +18,7 @@ const darkTheme = createTheme({
 
 });
 
-const eventManager = EventManager(event);
+const eventManager = EventManager();
 
 root.render(
     <ThemeProvider theme={darkTheme}>

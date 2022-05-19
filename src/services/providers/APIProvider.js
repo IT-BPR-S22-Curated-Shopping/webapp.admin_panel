@@ -38,12 +38,12 @@ function APIProvider (configuration, eventManager) {
     })
 
     useEffect(() => {
-        eventManager.addListener(eventManager.event().loggedIn, setAccessToken)
-        eventManager.addListener(eventManager.event().loggedOut, setAccessToken)
+        eventManager.addListener(eventManager.event.loggedIn, setAccessToken)
+        eventManager.addListener(eventManager.event.loggedOut, setAccessToken)
 
         return function cleanup() {
-            eventManager.removeListener(eventManager.event().loggedIn, setAccessToken)
-            eventManager.removeListener(eventManager.event().loggedOut, setAccessToken)
+            eventManager.removeListener(eventManager.event.loggedIn, setAccessToken)
+            eventManager.removeListener(eventManager.event.loggedOut, setAccessToken)
         };
     }, [])
 
