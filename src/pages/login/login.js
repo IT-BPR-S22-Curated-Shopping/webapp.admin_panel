@@ -38,7 +38,7 @@ function Login(props) {
         }
         else {
             eventManager.invoke(
-                eventManager.event().login,
+                eventManager.event.login,
                 {
                     email: data.get('email'),
                     password: data.get('password')
@@ -90,12 +90,12 @@ function Login(props) {
     }
 
     useEffect(() => {
-        eventManager.addListener(eventManager.event().authError, handleError)
-        eventManager.addListener(eventManager.event().loggedIn, handleSuccess)
+        eventManager.addListener(eventManager.event.authError, handleError)
+        eventManager.addListener(eventManager.event.loggedIn, handleSuccess)
 
         return function cleanup() {
-            eventManager.removeListener(eventManager.event().authError, handleError)
-            eventManager.removeListener(eventManager.event().loggedIn, handleSuccess)
+            eventManager.removeListener(eventManager.event.authError, handleError)
+            eventManager.removeListener(eventManager.event.loggedIn, handleSuccess)
         };
     }, [])
 

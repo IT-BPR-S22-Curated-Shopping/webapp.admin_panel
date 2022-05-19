@@ -96,12 +96,12 @@ export default function App(props) {
     };
 
     useEffect(() => {
-        eventManager.addListener(eventManager.event().loggedIn, handleLoggedIn);
-        eventManager.addListener(eventManager.event().loggedOut, handleLoggedOut);
+        eventManager.addListener(eventManager.event.loggedIn, handleLoggedIn);
+        eventManager.addListener(eventManager.event.loggedOut, handleLoggedOut);
 
         return function cleanup() {
-            eventManager.removeListener(eventManager.event().loggedIn, handleLoggedIn);
-            eventManager.removeListener(eventManager.event().loggedOut, handleLoggedOut);
+            eventManager.removeListener(eventManager.event.loggedIn, handleLoggedIn);
+            eventManager.removeListener(eventManager.event.loggedOut, handleLoggedOut);
         };
     }, []);
 
