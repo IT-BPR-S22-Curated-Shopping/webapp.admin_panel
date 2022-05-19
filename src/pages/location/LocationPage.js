@@ -16,7 +16,7 @@ function LocationPage(props) {
 
     const clickCallback = (data) => {
         navigate('/location/' + data.id);
-        apiLocation.get(data.id).then((res, error) => {
+        apiLocation?.get(data.id).then((res, error) => {
                 setLocationDetails(res.data);
             },
         );
@@ -50,7 +50,7 @@ function LocationPage(props) {
             clickCallback({id: params.id});
         }
 
-        apiLocation.getAll().then((res, err) => {
+        apiLocation?.getAll().then((res, err) => {
             setLocationList(res.data.map((x) => {
                 return {id: x.id, value: x.name};
             }));

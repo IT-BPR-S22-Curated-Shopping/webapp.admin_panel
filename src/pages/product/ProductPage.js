@@ -19,14 +19,14 @@ function ProductPage(props) {
     const navigate = useNavigate();
 
     const listItemClickCallback = (data) => {
-        productApi.get(data.id).then((res, error) => {
+        productApi?.get(data.id).then((res, error) => {
                 setProductDetails(res.data);
             },
         );
     };
 
     useEffect(() => {
-        productApi.getAll().then((res, err) => {
+        productApi?.getAll().then((res, err) => {
             setProductList(res.data.map((x) => {
                 return {id: x.id, value: x.name};
             }));
@@ -43,7 +43,7 @@ function ProductPage(props) {
     };
 
     const updateProductDetails = () => {
-        productApi.get(productDetails.id).then((res, error) => {
+        productApi?.get(productDetails.id).then((res, error) => {
                 setProductDetails(res.data);
             },
         );
