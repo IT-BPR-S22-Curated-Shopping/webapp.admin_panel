@@ -8,6 +8,12 @@ import {event} from '../managers/events/Event';
 
 import LocationService from './LocationService';
 
+// mock useNavigate
+const mockedUsedNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockedUsedNavigate,
+}));
 // spy implementation
 jest.spyOn(React, "useEffect").mockImplementationOnce(cb => cb()());
 
@@ -46,13 +52,15 @@ describe('test service', () => {
         let api = APIProvider(axiosConfiguration, new EventManager(event));
         let spy = jest.spyOn(api, 'post').mockImplementation(() => new Promise((resolve, reject) => {}));
         let service = LocationService(api);
-        let data = {name: "some Name", productId: "1", deviceId: "customdeviceid", presentationId: "presentationId"}
+        let data = {name: "some Name", productId: "1", deviceIds: [1, 2, 3], presentationId: "presentationId"}
         // act
         service.addLocation(data);
 
         // assert
+        let expectedData = data;
+        expectedData.deviceIds = expectedData.deviceIds.join(', ')
         expect(spy).toHaveBeenCalledTimes(1)
-        expect(spy).toHaveBeenCalledWith("/location", data)
+        expect(spy).toHaveBeenCalledWith("/location", expectedData)
     });
 
 

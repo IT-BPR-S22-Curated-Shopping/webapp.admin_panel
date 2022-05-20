@@ -6,28 +6,42 @@ import {
     CardContent,
     CardHeader, FormControl,
     Grid,
-    InputLabel, MenuItem, Select,
+    InputLabel, MenuItem, OutlinedInput, Select,
     TextField,
 
 } from '@mui/material';
 import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 function NewLocationPage(props) {
 
     const locationApi = props.locationService;
     const deviceApi = props.deviceService;
-    // const productApi = props.ProductService;
+    const productApi = props.productService;
     // const presentationApi = props.PresentationService;
 
     const [locationName, setLocationName] = useState('');
     const [selectedProduct, setSelectedProduct] = useState('');
-    const [selectedDevice, setSelectedDevice] = useState('');
+    const [selectedDevices, setSelectedDevices] = useState([]);
     const [selectedPresentation, setSelectedPresentation] = useState('');
 
     const [locations, setLocations] = useState([]);
     const [products, setProducts] = useState([]);
     const [devices, setDevices] = useState([]);
     const [presentations, setPresentations] = useState([]);
+
+    const navigate = useNavigate();
+
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+        PaperProps: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 250,
+            },
+        },
+    };
 
     useEffect(() => {
         locationApi.getAll().then((res, err) => {
@@ -41,6 +55,13 @@ function NewLocationPage(props) {
                 setDevices(res.data);
             }
         });
+
+        productApi.getAll().then((res, err) => {
+            if (res) {
+                setProducts(res.data);
+            }
+        });
+
     }, []);
 
     const handleChangeLocationName = (event) => {
@@ -50,7 +71,13 @@ function NewLocationPage(props) {
         setSelectedProduct(event.target.value);
     };
     const handleChangeDevice = (event) => {
-        setSelectedDevice(event.target.value);
+        const {
+            target: {value},
+        } = event;
+        setSelectedDevices(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+        );
     };
     const handleChangePresentation = (event) => {
         setSelectedPresentation(event.target.value);
@@ -59,19 +86,28 @@ function NewLocationPage(props) {
     const clearInput = () => {
         setLocationName('');
         setSelectedProduct('');
-        setSelectedDevice('');
+        setSelectedDevices([]);
         setSelectedPresentation('');
     };
 
     const onSaveClick = () => {
-        locationApi.addLocation()
+        locationApi.addLocation({
+            name: locationName,
+            productIds: selectedProduct,
+            deviceIds: findCommonElements(devices, selectedDevices).map(x => x.id),
+            presentationId: selectedPresentation,
+        });
         clearInput();
+        navigate('/location');
     };
 
     const onClearClick = () => {
         clearInput();
     };
 
+    function findCommonElements(arr1, arr2) {
+        return arr1.map(x => ({...x, is: arr2.includes(x.name)}));
+    }
 
     return (
         <React.Fragment>
@@ -92,7 +128,7 @@ function NewLocationPage(props) {
                             <CardContent>
                                 <Grid container flexDirection={'column'}>
                                     <TextField sx={{m: 1}} id="standard-basic" label="Location name" variant="standard"
-                                               inputProps={{ "data-testid": "textField-location-name" }}
+                                               inputProps={{'data-testid': 'textField-location-name'}}
                                                value={locationName} onChange={handleChangeLocationName}/>
                                     <FormControl variant="standard" sx={{m: 1}}>
                                         <InputLabel id="select-product">Product</InputLabel>
@@ -109,7 +145,8 @@ function NewLocationPage(props) {
                                             {
                                                 products?.length > 0 &&
                                                 products.map(x => {
-                                                    return (<MenuItem key={"product_" + x.id} value={x.id}>{x.id}</MenuItem>)
+                                                    return (<MenuItem key={'product_' + x.id}
+                                                                      value={x.id}>{x.name}</MenuItem>);
                                                 })
                                             }
                                         </Select>
@@ -119,17 +156,18 @@ function NewLocationPage(props) {
                                         <Select
                                             labelId="select-device"
                                             id="select-device"
-                                            value={selectedDevice}
+                                            multiple
+                                            value={selectedDevices}
                                             onChange={handleChangeDevice}
                                             label="Device"
+                                            renderValue={(selected) => selected.join(', ')}
+                                            MenuProps={MenuProps}
                                         >
-                                            <MenuItem id="d0" value="">
-                                                <em>None</em>
-                                            </MenuItem>
                                             {
                                                 devices?.length > 0 &&
                                                 devices.map(x => {
-                                                    return (<MenuItem key={"device_" + x.id} value={x.id}>{x.deviceId}</MenuItem>)
+                                                    return (<MenuItem key={'device_' + x.deviceId}
+                                                                      value={x.deviceId}>{x.deviceId}</MenuItem>);
                                                 })
                                             }
                                         </Select>
@@ -149,7 +187,8 @@ function NewLocationPage(props) {
                                             {
                                                 presentations?.length > 0 &&
                                                 presentations.map(x => {
-                                                    return (<MenuItem key={"presentation_" + x.id} value={x.id}>{x.id}</MenuItem>)
+                                                    return (<MenuItem key={'presentation_' + x.id}
+                                                                      value={x.id}>{x.id}</MenuItem>);
                                                 })
                                             }
                                         </Select>

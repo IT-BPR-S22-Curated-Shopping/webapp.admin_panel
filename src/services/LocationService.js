@@ -20,7 +20,7 @@ function LocationService(api) { //TODO: provider in constructor
         return api.post(`${path}`, {
             name: data.name,
             productId: data.productId,
-            deviceId: data.deviceId,
+            deviceIds: data.deviceIds.join(', '),
             presentationId: data.presentationId
         }).
             then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
