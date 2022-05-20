@@ -2,6 +2,15 @@ import {render, fireEvent, act, screen} from '@testing-library/react';
 import LocationServiceMock from '../../mocks/LoacationServiceMock';
 import NewLocationPage from './NewLocationPage';
 import DeviceServiceMock from '../../mocks/DeviceServiceMock';
+import React from 'react';
+import ProductServiceMock from '../../mocks/ProductServiceMock';
+
+// mock useNavigate
+const mockedUsedNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockedUsedNavigate,
+}));
 
 
 describe('test NewLocationPage', () => {
@@ -10,11 +19,12 @@ describe('test NewLocationPage', () => {
             // Arrange
             let dService = DeviceServiceMock();
             let lService = LocationServiceMock();
+            let pService = ProductServiceMock();
 
             await act(async ()=> {
 
                 // act
-                const rendered = () => render(<NewLocationPage locationService={lService} deviceService={dService}/>);
+                const rendered = () => render(<NewLocationPage locationService={lService} deviceService={dService} productService={pService}/>);
 
                 // assert
                 expect(rendered).not.toThrow();
@@ -25,9 +35,10 @@ describe('test NewLocationPage', () => {
             // Arrange
             let dService = DeviceServiceMock();
             let lService = LocationServiceMock();
+            let pService = ProductServiceMock();
 
             // act
-            await act(async ()=> render(<NewLocationPage locationService={lService} deviceService={dService}/>))
+            await act(async ()=> render(<NewLocationPage locationService={lService} deviceService={dService} productService={pService}/>))
             let title = screen.getByText("Create new location", {hidden:true})
 
             // assert
@@ -38,9 +49,10 @@ describe('test NewLocationPage', () => {
             // Arrange
             let dService = DeviceServiceMock();
             let lService = LocationServiceMock();
+            let pService = ProductServiceMock();
 
             // act
-            await act(async ()=> render(<NewLocationPage locationService={lService} deviceService={dService}/>))
+            await act(async ()=> render(<NewLocationPage locationService={lService} deviceService={dService} productService={pService}/>))
             let element = screen.getByText("Location name", {hidden: true})
             let elements = screen.getAllByRole("button", {hidden: true})
 
@@ -58,10 +70,11 @@ describe('test NewLocationPage', () => {
             // Arrange
             let dService = DeviceServiceMock();
             let lService = LocationServiceMock();
+            let pService = ProductServiceMock();
             let lServiceSpy = jest.spyOn(lService, 'addLocation')
 
             // act
-            await act(async ()=> render(<NewLocationPage locationService={lService} deviceService={dService}/>))
+            await act(async ()=> render(<NewLocationPage locationService={lService} deviceService={dService} productService={pService}/>))
             let button = screen.getByText("Save", {hidden: true})
             let locationNameInput = screen.getByTestId('textField-location-name');
 
