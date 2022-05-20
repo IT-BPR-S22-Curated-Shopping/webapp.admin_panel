@@ -108,7 +108,7 @@ function LocationPage(props) {
                                                 ? locationDetails.product.tags.map((x) => x.tag).toString()
                                                 : 'N/A'}
                                         </p>
-                                        <p>devices: {locationDetails.identificationDevices != null ? locationDetails.identificationDevices.map((x) => x.companyId + " - " + x.deviceId + " - " + x.deviceType) : "No identification devices currently set"}</p>
+                                        <p>devices: {locationDetails.identificationDevices != null ? locationDetails.identificationDevices.map((x) => `[${x.companyId} - ${x.deviceId} - ${x.deviceType}] `) : "No identification devices currently set"}</p>
                                         <Button onClick={() => removeLocationClick(locationDetails)}>Remove
                                             location</Button>
                                     </div>

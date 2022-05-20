@@ -93,12 +93,12 @@ function NewLocationPage(props) {
     const onSaveClick = () => {
         locationApi.addLocation({
             name: locationName,
-            productIds: selectedProduct,
+            productId: selectedProduct,
             deviceIds: findCommonElements(devices, selectedDevices).map(x => x.id),
             presentationId: selectedPresentation,
         });
-        clearInput();
-        navigate('/location');
+        // clearInput();
+        // navigate('/location');
     };
 
     const onClearClick = () => {
