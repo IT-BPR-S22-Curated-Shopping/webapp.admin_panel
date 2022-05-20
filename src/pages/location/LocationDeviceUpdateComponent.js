@@ -41,7 +41,7 @@ function LocationDeviceUpdateComponent(props) {
     useEffect(() => {
         if (props.open === true) {
             setSelectedDevices([]);
-            apiDevice.getAll().then(res => {
+            apiDevice.getAllAvailable().then(res => {
                 setDeviceList(res.data);
             })
             handleModalOpen()

@@ -100,9 +100,8 @@ function LocationPage(props) {
                                         <p>name: {locationDetails.name}</p>
                                         <p>presentation devices: {locationDetails.presentationDevices != null ? locationDetails.presentationDevices.map((x) => x.id).
                                         toString() : "No presentation devices currently set"}</p>
-                                        <p>products: {locationDetails.product != null &&
-                                        locationDetails.product.productNo
-                                            ? (locationDetails.product.productNo + " - " + locationDetails.product.name)
+                                        <p>products: {locationDetails.product != null
+                                            ? (locationDetails.product.number + " - " + locationDetails.product.name)
                                             : 'No product currently set'},
                                             tags: {locationDetails.product != null && locationDetails.product.tags !=
                                             null

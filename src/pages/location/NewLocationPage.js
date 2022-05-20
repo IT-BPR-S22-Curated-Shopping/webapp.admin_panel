@@ -50,7 +50,7 @@ function NewLocationPage(props) {
             }
         });
 
-        deviceApi.getAll().then((res, err) => {
+        deviceApi.getAllAvailable().then((res, err) => {
             if (res) {
                 setDevices(res.data);
             }

@@ -10,13 +10,19 @@ function DeviceService(api) { //TODO: provider in constructor
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
+    const getAllAvailable = () => {
+        return api.get(`${path}/available`).
+        then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
+        catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+    };
+
     const get = (id) => {
         return api.get(`${path}/${id}`).
             then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
-    return {getAll, get};
+    return {getAll, get, getAllAvailable};
 }
 
 export default DeviceService;
