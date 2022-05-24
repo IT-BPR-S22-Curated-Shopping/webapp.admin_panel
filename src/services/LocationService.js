@@ -16,6 +16,17 @@ function LocationService(api) { //TODO: provider in constructor
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
+    const getLocationAnalysis = (locationId, from, to) => {
+        const params = {
+            from: from,
+            to: to
+        }
+
+        return api.get(`/analysis/location/${locationId}`, {}, params)
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+    };
+
     const addLocation = (data) => {
         return api.post(`${path}`, {
             name: data.name,
@@ -52,7 +63,7 @@ function LocationService(api) { //TODO: provider in constructor
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
-    return {getAll, get, addLocation, removeLocation, update, updateDevices, updateProduct};
+    return {getAll, get, addLocation, removeLocation, update, updateDevices, updateProduct, getLocationAnalysis};
 }
 
 

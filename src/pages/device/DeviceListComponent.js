@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {
-    Avatar, Box, Grid, IconButton,
+    Grid,
     List, ListItemAvatar, ListItemButton,
-    ListItemText,
+    ListItemText
 } from '@mui/material';
-import {BluetoothSearching, ToggleOn, ToggleOff, DeviceUnknown} from '@mui/icons-material';
 import {useEffect} from 'react';
+import IdDeviceTypeComponent from "../../components/IdDeviceTypeComponent";
 
 function DeviceListComponent(props) {
 
@@ -24,38 +24,28 @@ function DeviceListComponent(props) {
     }, [props.listData]);
 
     return (
+        <Grid container>
+            <Grid item xs={12}>
+                <List dense={dense}>
+                    {deviceList.map(x => (
+                        <ListItemButton
+                            key={x.deviceId}
+                            selected={selectedIndex === deviceList.indexOf(x)}
+                            onClick={(event) => handleListItemClick(event, deviceList.indexOf(x))}
+                        >
+                            <ListItemAvatar>
+                                <IdDeviceTypeComponent device={x} disableTooltip={false}/>
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={x.companyId}
+                                secondary={secondary ? 'ID: ' + x.deviceId : null}
+                            />
+                        </ListItemButton>))
+                    }
+                </List>
 
-                <Grid container>
-                    <Grid item xs={12}>
-                        <List dense={dense}>
-                            {deviceList.map(x => (
-                                <ListItemButton
-                                    key={x.deviceId}
-                                    selected={selectedIndex === deviceList.indexOf(x)}
-                                    onClick={(event) => handleListItemClick(event, deviceList.indexOf(x))}
-                                >
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            {
-                                                x.deviceType === 'BLE' ? (<BluetoothSearching/>) : (<DeviceUnknown/>)
-                                            }
-
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary={x.companyId}
-                                        secondary={secondary ? 'ID: ' + x.deviceId : null}
-                                    />
-                                    <IconButton edge="end" aria-label="delete">
-                                        <ToggleOn color={'success'}/>
-                                    </IconButton>
-                                </ListItemButton>))
-                            }
-                        </List>
-
-                    </Grid>
-                </Grid>
-
+            </Grid>
+        </Grid>
     );
 }
 
