@@ -66,7 +66,7 @@ function LocationProductUpdateComponent(props) {
                                     key={product.id}
                                     value={product}
                                 >
-                                    {product.id} - {product.productNo} - {product.name}
+                                    {product.id} - {product.number} - {product.name}
                                 </MenuItem>
                             ))}
                         </Select>
