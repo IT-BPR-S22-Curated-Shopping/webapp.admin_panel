@@ -15,6 +15,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ListItemText from '@mui/material/ListItemText';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import {Route, Routes, useNavigate} from 'react-router-dom';
 import {
     About, Device, Home,
@@ -47,9 +48,9 @@ export default function App(props) {
     const navigate = useNavigate();
     const pages = [
         {name: 'Home', icon: <HomeRounded/>},
-        {name: 'Device', icon: <LocationOn/>},
-        {name: 'Location', icon: <Radar/>},
-        {name: 'Product', icon: <WbIridescent/>},
+        {name: 'Device', icon: <Radar/>},
+        {name: 'Location', icon: <LocationOn/>},
+        {name: 'Product', icon: <ShoppingBasketIcon/>},
     ];
 
     const eventManager = props.eventManager;
@@ -165,7 +166,7 @@ export default function App(props) {
                 <Divider/>
                 {authorized ?
                     <ListItem key="Sign out" disablePadding sx={{display: 'block'}}
-                              onClick={() => eventManager.invoke(eventManager.event().logout)}>
+                              onClick={() => eventManager.invoke(eventManager.event.logout)}>
                         <ListItemButton
                             sx={{
                                 minHeight: 48,

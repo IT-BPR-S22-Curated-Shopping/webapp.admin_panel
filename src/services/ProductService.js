@@ -16,6 +16,17 @@ function ProductService(api) {
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
+    const getProductAnalysis = (productId, from, to) => {
+        const params = {
+            from: from,
+            to: to
+        }
+
+        return api.get(`/analysis/product/${productId}`, {}, params)
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+    };
+
     const add = (data) => {
         return api.post(`${path}`, {
             name: data.name,
@@ -39,7 +50,7 @@ function ProductService(api) {
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     }
 
-    return {getAll, get, add, updateTags};
+    return {getAll, get, add, updateTags, getProductAnalysis};
 }
 
 export default ProductService;

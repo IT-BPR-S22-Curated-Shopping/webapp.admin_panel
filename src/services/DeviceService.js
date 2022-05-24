@@ -10,6 +10,18 @@ function DeviceService(api) { //TODO: provider in constructor
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
+    const getDeviceAnalysis = (deviceId, from, to) => {
+        const params = {
+            deviceId: deviceId,
+            from: from,
+            to: to
+        }
+
+        return api.get(`/analysis/device`, {}, params)
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+    };
+
     const getAllAvailable = () => {
         return api.get(`${path}/available`).
         then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
@@ -22,7 +34,7 @@ function DeviceService(api) { //TODO: provider in constructor
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
-    return {getAll, get, getAllAvailable};
+    return {getAll, get, getAllAvailable, getDeviceAnalysis};
 }
 
 export default DeviceService;
