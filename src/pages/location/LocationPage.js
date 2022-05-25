@@ -194,7 +194,7 @@ function LocationPage(props) {
                                                 <Box>
                                                     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: -1, marginTop: -1}} >
                                                         <IconButton color='primary' onClick={handleRemoveProduct} disableRipple={true}>
-                                                            <Tooltip title={'Remove product from location'}>
+                                                            <Tooltip title={`Remove ${locationDetails.product.name} from location`}>
                                                                 <Typography variant="subtitle1" color="text.secondary" component="div">
                                                                     {locationDetails.product.name}
                                                                 </Typography>
@@ -216,15 +216,16 @@ function LocationPage(props) {
                                     <Box margin={1}>
                                         {locationDetails.identificationDevices && locationDetails.identificationDevices.length > 0 ?
                                             locationDetails.identificationDevices.map((d) => {
-                                                return <Tooltip key={d.deviceId} title={'Remove device from location'}>
-                                                    <IconButton sx={{marginLeft: -1}} color="primary" onClick={(e) => handleRemoveDevice(e.target.textContent)} disableRipple={true}>
-                                                        <Chip
-                                                            sx={{padding:1, marginLeft: 1}}
-                                                            label={d.deviceId}
-                                                            variant="outlined"
-                                                            icon={<IdDeviceTypeComponent device={d} disableTooltip={true} size={20}/>} />
+                                                return <IconButton sx={{marginLeft: -1}} color="primary" onClick={(e) => handleRemoveDevice(e.target.textContent)} disableRipple={true}>
+                                                        <Tooltip key={d.deviceId} title={`Remove ${d.deviceId} from location`}>
+                                                            <Chip
+                                                                clickable={true}
+                                                                sx={{padding:1, marginLeft: 1}}
+                                                                label={d.deviceId}
+                                                                variant="outlined"
+                                                                icon={<IdDeviceTypeComponent device={d} disableTooltip={true} size={20}/>} />
+                                                        </Tooltip>
                                                     </IconButton>
-                                                </Tooltip>
                                             }) : ''}
                                         <IconButton color="primary" onClick={handleDeviceUpdateModalOpen}>
                                             <Tooltip title={'Add identification device.'}>
