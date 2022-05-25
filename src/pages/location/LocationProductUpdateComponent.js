@@ -19,8 +19,15 @@ function LocationProductUpdateComponent(props) {
 
     const handleProductUpdateSave = (newProduct) => {
         if (params.id !== undefined) {
-            apiLocation.updateProduct(params.id, newProduct).then(() => {
-                props.callback(params)
+            apiLocation.updateProduct(params.id, newProduct).then((res) => {
+                if (!res.data.hasOwnProperty('errorMsg')) {
+                    props.callback(params)
+                    setSelectedProduct('')
+                    handleModalClose()
+                }
+                else {
+                    setSelectedProduct(res.data.errorMsg.response.data)
+                }
             });
         }
     }

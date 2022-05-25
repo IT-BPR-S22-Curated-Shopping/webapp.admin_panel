@@ -12,23 +12,24 @@ import {
 } from '@mui/material';
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import SuccessModalComponent from "../../components/SuccessModalComponent";
+import Typography from "@mui/material/Typography";
 
 function NewLocationPage(props) {
 
     const locationApi = props.locationService;
     const deviceApi = props.deviceService;
     const productApi = props.productService;
-    // const presentationApi = props.PresentationService;
 
     const [locationName, setLocationName] = useState('');
     const [selectedProduct, setSelectedProduct] = useState('');
     const [selectedDevices, setSelectedDevices] = useState([]);
-    const [selectedPresentation, setSelectedPresentation] = useState('');
 
     const [locations, setLocations] = useState([]);
     const [products, setProducts] = useState([]);
     const [devices, setDevices] = useState([]);
-    const [presentations, setPresentations] = useState([]);
+    const [errorMsg, setErrorMsg] = useState('')
+    const [showSuccess, setShowSuccess] = useState(false)
 
     const navigate = useNavigate();
 
@@ -61,14 +62,15 @@ function NewLocationPage(props) {
                 setProducts(res.data);
             }
         });
-
     }, []);
 
     const handleChangeLocationName = (event) => {
         setLocationName(event.target.value);
+        clearErrorMsg()
     };
     const handleChangeProduct = (event) => {
         setSelectedProduct(event.target.value);
+        clearErrorMsg()
     };
     const handleChangeDevice = (event) => {
         const {
@@ -78,16 +80,15 @@ function NewLocationPage(props) {
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
         );
+        clearErrorMsg()
     };
-    const handleChangePresentation = (event) => {
-        setSelectedPresentation(event.target.value);
-    };
+
 
     const clearInput = () => {
         setLocationName('');
         setSelectedProduct('');
         setSelectedDevices([]);
-        setSelectedPresentation('');
+        clearErrorMsg()
     };
 
     const onSaveClick = () => {
@@ -95,15 +96,26 @@ function NewLocationPage(props) {
             name: locationName,
             productId: selectedProduct,
             deviceIds: findCommonElements(devices, selectedDevices).map(x => x.id),
-            presentationId: selectedPresentation,
+        }).then((res) => {
+            console.log(res.data)
+            if (res.data.hasOwnProperty('errorMsg')) {
+                setErrorMsg(res.data.errorMsg.response.data)
+            }
+            else {
+                setShowSuccess(true);
+                clearInput();
+            }
         });
-        // clearInput();
         // navigate('/location');
     };
 
     const onClearClick = () => {
         clearInput();
     };
+
+    const clearErrorMsg = () => setErrorMsg('')
+
+    const closeSuccess = () => setShowSuccess(false);
 
     function findCommonElements(arr1, arr2) {
         return arr1.map(x => ({...x, is: arr2.includes(x.name)}));
@@ -125,6 +137,9 @@ function NewLocationPage(props) {
                                 title="Create new location"
                             >
                             </CardHeader>
+                            <Typography variant="subtitle1" color="red" component="div" marginLeft={2}>
+                                {errorMsg}
+                            </Typography>
                             <CardContent>
                                 <Grid container flexDirection={'column'}>
                                     <TextField sx={{m: 1}} id="standard-basic" label="Location name" variant="standard"
@@ -172,27 +187,6 @@ function NewLocationPage(props) {
                                             }
                                         </Select>
                                     </FormControl>
-                                    <FormControl variant="standard" sx={{m: 1}}>
-                                        <InputLabel id="select-presentation">Presentation</InputLabel>
-                                        <Select
-                                            labelId="select-presentation"
-                                            id="select-presentation"
-                                            value={selectedPresentation}
-                                            onChange={handleChangePresentation}
-                                            label="Device"
-                                        >
-                                            <MenuItem value="">
-                                                <em>None</em>
-                                            </MenuItem>
-                                            {
-                                                presentations?.length > 0 &&
-                                                presentations.map(x => {
-                                                    return (<MenuItem key={'presentation_' + x.id}
-                                                                      value={x.id}>{x.id}</MenuItem>);
-                                                })
-                                            }
-                                        </Select>
-                                    </FormControl>
                                 </Grid>
                             </CardContent>
                             <CardActions>
@@ -204,9 +198,8 @@ function NewLocationPage(props) {
                             </CardActions>
                         </Card>
                     </Grid>
-
+                    <SuccessModalComponent open={showSuccess} close={closeSuccess} message={`Location ${locationName} successfully created`}/>
                 </Grid>
-
             </main>
         </React.Fragment>
     );

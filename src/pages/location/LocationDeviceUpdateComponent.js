@@ -6,6 +6,7 @@ import {useEffect} from "react";
 
 
 function LocationDeviceUpdateComponent(props) {
+    const currentDevices = props.currentDevices
     const params = useParams();
     const apiLocation = props.locationApi;
     const apiDevice = props.deviceApi;
@@ -17,14 +18,21 @@ function LocationDeviceUpdateComponent(props) {
         const {
             target: { value },
         } = event;
-
         setSelectedDevices( typeof value === 'string' ? value.split(',') : value);
     }
 
     const handleDeviceUpdateSave = (newDevices) => {
+        Array.prototype.push.apply(currentDevices, newDevices);
         if (params.id !== undefined) {
-            apiLocation.updateDevices(params.id, newDevices).then(res => {
-                props.callback(params)
+            apiLocation.updateDevices(params.id, currentDevices).then(res => {
+                if (!res.data.hasOwnProperty('errorMsg')) {
+                    props.callback(params)
+                    setSelectedDevices([])
+                    handleModalClose()
+                }
+                else {
+                    setSelectedDevices(res.data.errorMsg.response.data)
+                }
             });
         }
     }

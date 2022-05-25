@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {Button, Card, CardActions, CardContent, CardHeader, Chip, Grid, TextField} from '@mui/material';
+import Typography from "@mui/material/Typography";
+import SuccessModalComponent from "../../components/SuccessModalComponent";
 
 function NewProductPage(props) {
 
@@ -11,6 +13,8 @@ function NewProductPage(props) {
     const [name, setName] = useState('');
     const [image, setImage] = useState('');
     const [productNumber, setProductNumber] = useState('');
+    const [errorMsg, setErrorMsg] = useState('')
+    const [showSuccess, setShowSuccess] = useState(false)
 
     const [chips, setChips] = useState([]);
     const [tagInput, setTagInput] = useState('');
@@ -32,18 +36,22 @@ function NewProductPage(props) {
     }, [tagInput]);
 
     const handleChangeName = (event) => {
+        clearErrorMsg()
         setName(event.target.value);
     };
 
     const handleProductImageChange = (event) => {
+        clearErrorMsg()
         setImage(event.target.value);
     };
 
     const handleProductNumberChange = (event) => {
+        clearErrorMsg()
         setProductNumber(event.target.value);
     };
 
     const handleChangeTags = (event) => {
+        clearErrorMsg()
         setTagInput(event.target.value);
     };
 
@@ -68,7 +76,10 @@ function NewProductPage(props) {
         setImage('');
         setProductNumber('');
         setChips([]);
+        clearErrorMsg()
     };
+
+    const clearErrorMsg = () => setErrorMsg('')
 
     const onChipDeleteClick = (value) => {
         let regex = new RegExp('\\b' + value + '\\b', 'g');
@@ -86,15 +97,20 @@ function NewProductPage(props) {
             productNo: productNumber,
             image: image,
             tags: chips,
-        }).then((res, error) => {
-
+        }).then((res) => {
+            if (res.data.hasOwnProperty('errorMsg')) {
+                setErrorMsg(res.data.errorMsg.response.data)
+            }
+            else {
+                setShowSuccess(true);
+                clearInput();
+            }
         });
-        clearInput();
     };
 
-    const onClearClick = () => {
-        clearInput();
-    };
+    const onClearClick = () => clearInput();
+
+    const closeSuccess = () => setShowSuccess(false);
 
     return (
         <React.Fragment>
@@ -112,6 +128,9 @@ function NewProductPage(props) {
                                 title="New Product"
                             >
                             </CardHeader>
+                            <Typography variant="subtitle1" color="red" component="div" marginLeft={2}>
+                                {errorMsg}
+                            </Typography>
                             <CardContent>
                                 <Grid container flexDirection={'column'}>
                                     <TextField sx={{m: 1}} id="standard-basic" label="Name" variant="standard"
@@ -142,9 +161,8 @@ function NewProductPage(props) {
                             </CardActions>
                         </Card>
                     </Grid>
-
+                    <SuccessModalComponent open={showSuccess} close={closeSuccess} message={`Product ${name} successfully created`}/>
                 </Grid>
-
             </main>
         </React.Fragment>
     );

@@ -33,9 +33,9 @@ function LocationService(api) { //TODO: provider in constructor
             productId: data.productId,
             deviceIds: data.deviceIds.join(', '),
             presentationId: data.presentationId
-        }).
-            then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
-            catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+        })
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
     const update = (location) => {

@@ -44,15 +44,15 @@ function idDeviceTypeComponent(props) {
         switch (device.deviceType) {
             case "BLE":
                 return <BluetoothSearching sx={{
-                height: props.size, width: props.size
+                height: props.size - 2, width: props.size - 2
                 }}/>
             case "CV":
                 return <VideoCameraFrontIcon sx={{
-                height: props.size, width: props.size
+                height: props.size - 2, width: props.size - 2
             }}/>
             default:
                 return <DeviceUnknown sx={{
-                    height: props.size, width: props.size
+                    height: props.size - 2, width: props.size - 2
                 }}/>
         }
     }

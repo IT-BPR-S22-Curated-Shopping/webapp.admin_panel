@@ -67,7 +67,7 @@ function ProductPage(props) {
 
     const getAnalysis = (fromTimestamp) => {
         if (productDetails != null)
-            productApi.getProductAnalysis(productDetails.id, fromTimestamp, currentMillis()).then((res, err) => setProductAnalysis(res.data))
+            productApi.getProductAnalysis(productDetails.id, fromTimestamp, currentMillis()).then((res) => setProductAnalysis(res.data))
     }
 
     const updateAnalysis = (fromTimestamp) => {
@@ -114,7 +114,7 @@ function ProductPage(props) {
                                     <Box ml={2} mb={1}>
                                         {productDetails.tags.length > 0 ?
                                             productDetails.tags.map((c) => {
-                                                return <Chip key={c.tag} label={c.tag} variant="outlined"
+                                                return <Chip sx={{marginRight: 1}} key={c.tag} label={c.tag} variant="outlined"
                                                              onDelete={() => onChipDeleteClick(c)}/>;
                                             }) : ''}
                                         <IconButton color="primary" aria-label="Add chip" component="span">

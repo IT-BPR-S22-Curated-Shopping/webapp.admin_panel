@@ -31,7 +31,7 @@ function ProductService(api) {
         return api.post(`${path}`, {
             name: data.name,
             tags: data.tags,
-            productNo: data.productNo,
+            number: data.productNo,
             image: data.image
         }).
             then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).

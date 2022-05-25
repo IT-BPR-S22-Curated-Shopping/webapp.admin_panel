@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {Box, Button, Grid, IconButton, Link, Tooltip} from '@mui/material';
 import ServiceResponseEnum from '../../util/ServiceResponseEnum';
 import {useNavigate, useParams} from 'react-router-dom';
@@ -16,6 +16,7 @@ import Card from "@mui/material/Card";
 import {currentMillis, getJanFirst2022, isBeforeJanFirst2022} from "../../util/timestampConverter";
 import AnalysisComponent from "../../components/AnalysisComponent";
 import IdDeviceTypeComponent from "../../components/IdDeviceTypeComponent";
+import WarningModalComponent from "../../components/WarningModalComponent";
 
 function LocationPage(props) {
     const params = useParams();
@@ -28,6 +29,10 @@ function LocationPage(props) {
     const [productUpdateModalOpen, setProductUpdateModalOpen] = React.useState(false);
     const navigate = useNavigate();
     const [locationAnalysis, setLocationAnalysis] = React.useState(null);
+    const [showDeleteLocationWarning, setShowDeleteLocationWarning] = useState(false)
+    const [showRemoveProductWarning, setShowRemoveProductWarning] = useState(false)
+    const [showRemoveDeviceWarning, setShowRemoveDeviceWarning] = useState(false)
+    const [deviceToRemove, setDeviceToRemove] = useState('')
 
     const clickCallback = (data) => {
         if (data.id !== undefined) {
@@ -44,22 +49,7 @@ function LocationPage(props) {
     };
 
     const removeLocationClick = () => {
-        const location = locationDetails //TODO: added JN removed from params
-        locationApi.removeLocation(location.id).then((res) => {
-            if (res.state === ServiceResponseEnum.SUCCESS) {
-                let index = locationList.findIndex(x => x.id === location.id);
-                if (index > -1) {
-                    setLocationList([
-                        ...locationList.slice(0, index),
-                        ...locationList.slice(index + 1, locationList.length),
-                    ]);
-                    setLocationDetails(null);
-                } else {
-                    // something went wrong
-                    console.log('could not find item in list');
-                }
-            }
-        });
+       setShowDeleteLocationWarning(true);
     };
     
     const handleDeviceUpdateModalOpen = () => {
@@ -100,6 +90,70 @@ function LocationPage(props) {
 
     const getPresentationLink = () => `https://curatedshopping.netlify.app/presentation/${locationDetails.id}`
 
+    const handleWarningCancel = () => {
+        setShowDeleteLocationWarning(false);
+        setShowRemoveProductWarning(false);
+        setShowRemoveDeviceWarning(false);
+        setDeviceToRemove('')
+    }
+
+    const handleRemoveProduct = () => setShowRemoveProductWarning(true);
+
+    const handleRemoveDevice = (deviceId) => {
+        setDeviceToRemove(deviceId);
+        setShowRemoveDeviceWarning(true)
+    }
+
+    const handleRemoveProductConfirm = () => {
+        locationDetails.product = null
+        locationApi.update(locationDetails)
+            .then(res => {
+                if (!res.data.hasOwnProperty('errorMsg')) {
+                    setShowRemoveProductWarning(false);
+                }
+            })
+    }
+
+    const handleRemoveDeviceConfirm = () => {
+        for(let i = 0; i < locationDetails.identificationDevices.length; i++) {
+            if (locationDetails.identificationDevices[i].deviceId === deviceToRemove.trim()) {
+                console.log()
+                if (i === 0) {
+                    locationDetails.identificationDevices.splice(i, 1)
+                }
+                else {
+                    locationDetails.identificationDevices.splice(i, i)
+                }
+            }
+        }
+        locationApi.update(locationDetails)
+            .then(res => {
+                if (!res.data.hasOwnProperty('errorMsg')) {
+                    setShowRemoveDeviceWarning(false);
+                    setDeviceToRemove('')
+                }
+            })
+    }
+
+    const handleDeleteLocationConfirm = () => {
+        locationApi.removeLocation(locationDetails.id).then((res) => {
+            if (res.state === ServiceResponseEnum.SUCCESS) {
+                let index = locationList.findIndex(x => x.id === locationDetails.id);
+                if (index > -1) {
+                    setLocationList([
+                        ...locationList.slice(0, index),
+                        ...locationList.slice(index + 1, locationList.length),
+                    ]);
+                    setLocationDetails(null);
+                } else {
+                    // something went wrong
+                    console.log('could not find item in list');
+                }
+            }
+        });
+        setShowDeleteLocationWarning(false);
+    }
+
     return (
         <React.Fragment>
             <main>
@@ -138,15 +192,21 @@ function LocationPage(props) {
                                         </Box>
                                             {locationDetails.product && locationDetails.product.name ?
                                                 <Box>
-                                                    <Typography variant="subtitle1" color="text.secondary" component="div">
-                                                        {locationDetails.product.name}
-                                                    </Typography>
+                                                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: -1, marginTop: -1}} >
+                                                        <IconButton color='primary' onClick={handleRemoveProduct} disableRipple={true}>
+                                                            <Tooltip title={'Remove product from location'}>
+                                                                <Typography variant="subtitle1" color="text.secondary" component="div">
+                                                                    {locationDetails.product.name}
+                                                                </Typography>
+                                                            </Tooltip>
+                                                        </IconButton>
+                                                    </Box>
                                                     <Typography variant="subtitle1" color="text.secondary" component="div">
                                                         <Link href={getPresentationLink()}>https://curatedshopping.netlify.app/presentation/{locationDetails.id}</Link>
-                                                     </Typography>
+                                                    </Typography>
                                                 </Box>
                                                 :
-                                                <IconButton onClick={handleProductUpdateModalOpen}>
+                                                <IconButton sx={{marginLeft: -1}} color="primary" onClick={handleProductUpdateModalOpen}>
                                                     <Tooltip title={'Add product to location'}>
                                                          <AddCircleOutlineIcon />
                                                     </Tooltip>
@@ -156,65 +216,32 @@ function LocationPage(props) {
                                     <Box margin={1}>
                                         {locationDetails.identificationDevices && locationDetails.identificationDevices.length > 0 ?
                                             locationDetails.identificationDevices.map((d) => {
-                                                return <Chip
-                                                    key={d.deviceId}
-                                                    sx={{padding:1}}
-                                                    label={d.deviceId}
-                                                    variant="outlined"
-                                                    icon={<IdDeviceTypeComponent device={d} disableTooltip={true} size={20}/>} />;
+                                                return <Tooltip key={d.deviceId} title={'Remove device from location'}>
+                                                    <IconButton sx={{marginLeft: -1}} color="primary" onClick={(e) => handleRemoveDevice(e.target.textContent)} disableRipple={true}>
+                                                        <Chip
+                                                            sx={{padding:1, marginLeft: 1}}
+                                                            label={d.deviceId}
+                                                            variant="outlined"
+                                                            icon={<IdDeviceTypeComponent device={d} disableTooltip={true} size={20}/>} />
+                                                    </IconButton>
+                                                </Tooltip>
                                             }) : ''}
-
-
-                                        <IconButton onClick={handleDeviceUpdateModalOpen}>
+                                        <IconButton color="primary" onClick={handleDeviceUpdateModalOpen}>
                                             <Tooltip title={'Add identification device.'}>
                                                 <AddCircleOutlineIcon />
                                             </Tooltip>
                                         </IconButton>
                                     </Box>
-                                    {/*<Box ml={2} mb={1}>*/}
-                                    {/*    {productDetails.tags.length > 0 ?*/}
-                                    {/*        productDetails.tags.map((c) => {*/}
-                                    {/*            return <Chip key={c.tag} label={c.tag} variant="outlined"*/}
-                                    {/*                         onDelete={() => onChipDeleteClick(c)}/>;*/}
-                                    {/*        }) : ''}*/}
-                                    {/*    <IconButton color="primary" aria-label="Add chip" component="span">*/}
-                                    {/*        <AddChipsModalComponent productService={productApi}*/}
-                                    {/*                                tagService={tagApi}*/}
-                                    {/*                                product={productDetails}*/}
-                                    {/*                                callback={addChipCallback}/>*/}
-                                    {/*    </IconButton>*/}
-
-                                    {/*</Box>*/}
                                 </Box>
                             </Card>
                             {locationAnalysis != null && (<AnalysisComponent analysis={locationAnalysis} updateCallback={updateAnalysis}/>)}
                         </Grid>
                     )}
-
-                    {/*</Grid>*/}
-                    {/*{locationDetails != null && (*/}
-                    {/*    <Grid item xs={4} sx={{borderRight: 1}}>*/}
-                    {/*        <div>*/}
-                    {/*            <p>id: {locationDetails.id}</p>*/}
-                    {/*            <p>name: {locationDetails.name}</p>*/}
-                    {/*            <p>presentation devices: {locationDetails.presentationDevices != null ? locationDetails.presentationDevices.map((x) => x.id).*/}
-                    {/*            toString() : "No presentation devices currently set"}</p>*/}
-                    {/*            <p>products: {locationDetails.product != null*/}
-                    {/*                ? (locationDetails.product.number + " - " + locationDetails.product.name)*/}
-                    {/*                : 'No product currently set'},*/}
-                    {/*                tags: {locationDetails.product != null && locationDetails.product.tags !=*/}
-                    {/*                null*/}
-                    {/*                    ? locationDetails.product.tags.map((x) => x.tag).toString()*/}
-                    {/*                    : 'N/A'}*/}
-                    {/*            </p>*/}
-                    {/*            <p>devices: {locationDetails.identificationDevices != null ? locationDetails.identificationDevices.map((x) => `[${x.companyId} - ${x.deviceId} - ${x.deviceType}] `) : "No identification devices currently set"}</p>*/}
-                    {/*            <Button onClick={() => removeLocationClick(locationDetails)}>Remove*/}
-                    {/*                location</Button>*/}
-                    {/*        </div>*/}
-                    {/*    </Grid>*/}
-                    {/*    )}*/}
-                    <LocationDeviceUpdateComponent locationApi={locationApi} deviceApi={deviceApi} callback={clickCallback}  open={identificationDeviceUpdateModalOpen} setOpen={setIdentificationDeviceUpdateModalOpen}/>
+                    <LocationDeviceUpdateComponent locationApi={locationApi} deviceApi={deviceApi} callback={clickCallback}  open={identificationDeviceUpdateModalOpen} setOpen={setIdentificationDeviceUpdateModalOpen} currentDevices={locationDetails?.identificationDevices}/>
                     <LocationProductUpdateComponent locationApi={locationApi} productApi={productApi} callback={clickCallback} open={productUpdateModalOpen} setOpen={setProductUpdateModalOpen} />
+                    <WarningModalComponent message={`Delete location ${locationDetails?.name}? \nThis cannot be undone.`} open={showDeleteLocationWarning} cancel={handleWarningCancel} confirm={handleDeleteLocationConfirm}/>
+                    <WarningModalComponent message={`Remove product ${locationDetails?.product?.name} from location ${locationDetails?.name}?`} open={showRemoveProductWarning} cancel={handleWarningCancel} confirm={handleRemoveProductConfirm}/>
+                    <WarningModalComponent message={`Remove device ${deviceToRemove} from location ${locationDetails?.name}?`} open={showRemoveDeviceWarning} cancel={handleWarningCancel} confirm={handleRemoveDeviceConfirm}/>
                 </Grid>
             </main>
         </React.Fragment>

@@ -57,7 +57,9 @@ function DevicePage(props) {
                             Devices
                         </Typography>
                         <DeviceListComponent listData={deviceList} callback={deviceClickCallback}/>
-                        <Button>Add device</Button>
+                        <Typography variant="subtitle1" color="text.secondary" component="div" marginTop={1}>
+                            Devices will appear as they come online
+                        </Typography>
                     </Grid>
                     {deviceDetails != null && (
                         <Grid item md={7} lg={8} sx={{borderRight: 1}}>
