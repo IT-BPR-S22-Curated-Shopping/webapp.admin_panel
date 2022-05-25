@@ -117,13 +117,7 @@ function LocationPage(props) {
     const handleRemoveDeviceConfirm = () => {
         for(let i = 0; i < locationDetails.identificationDevices.length; i++) {
             if (locationDetails.identificationDevices[i].deviceId === deviceToRemove.trim()) {
-                console.log()
-                if (i === 0) {
-                    locationDetails.identificationDevices.splice(i, 1)
-                }
-                else {
-                    locationDetails.identificationDevices.splice(i, i)
-                }
+                locationDetails.identificationDevices.splice(i, 1)
             }
         }
         locationApi.update(locationDetails)
