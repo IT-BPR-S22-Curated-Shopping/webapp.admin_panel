@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import {useEffect} from 'react';
-import {Box, Button, Chip, Grid, IconButton} from '@mui/material';
+import {useEffect, useState} from 'react';
+import {Box, Button, Chip, Grid, IconButton, Tooltip} from '@mui/material';
 import ListComponent from '../../components/ListComponent';
 import {useNavigate} from 'react-router-dom';
 import AddChipsModalComponent from './AddChipsModalComponent';
@@ -11,18 +11,20 @@ import {currentMillis, getJanFirst2022, isBeforeJanFirst2022} from "../../util/t
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Card from "@mui/material/Card";
+import NewValueModalComponent from "../../components/NewValueModalComponent";
 
 function ProductPage(props) {
 
     const productApi = props.productService;
     const tagApi = props.tagService;
 
-    const [productList, setProductList] = React.useState([]);
-    const [productDetails, setProductDetails] = React.useState(null);
-    const [selectedChip, setSelectedChip] = React.useState(null);
-    const [openDeleteChipModal, setOpenDeleteChipModal] = React.useState(false);
+    const [productList, setProductList] = useState([]);
+    const [productDetails, setProductDetails] = useState(null);
+    const [selectedChip, setSelectedChip] = useState(null);
+    const [openDeleteChipModal, setOpenDeleteChipModal] = useState(false);
     const navigate = useNavigate();
-    const [productAnalysis, setProductAnalysis] = React.useState(null);
+    const [productAnalysis, setProductAnalysis] = useState(null);
+    const [showChangePicture, setShowChangePicture] = useState(false)
 
     const listItemClickCallback = (data) => {
         productApi?.get(data.id).then((res, error) => {
@@ -77,6 +79,24 @@ function ProductPage(props) {
         getAnalysis(fromTimestamp)
     }
 
+    const handleCancel = () => {
+        setShowChangePicture(false);
+    }
+
+    const handlePictureChangeConfirm = (url) => {
+        productDetails.image = url;
+        productApi.update(productDetails)
+            .then(res => {
+                if (!res.data.hasOwnProperty('errorMsg')) {
+                    setShowChangePicture(false);
+                }
+            })
+    }
+
+    const handlePictureChange = () => {
+        setShowChangePicture(true);
+    }
+
     return (
         <React.Fragment>
             <main>
@@ -97,11 +117,15 @@ function ProductPage(props) {
                     {productDetails != null && (
                         <Grid item xs={8}>
                             <Card sx={{ display: 'flex' }}>
-                                <CardMedia
-                                    component="img"
-                                    sx={{ width: 151, padding: 1}}
-                                    image={productDetails.image ? productDetails.image : 'https://icon-library.com/images/icon-for-products/icon-for-products-7.jpg'}
-                                />
+                                <IconButton onClick={handlePictureChange} disableRipple={true}>
+                                    <Tooltip title={`Change image for ${productDetails.name}`}>
+                                        <CardMedia
+                                            component="img"
+                                            sx={{ width: 151, padding: 1}}
+                                            image={productDetails.image ? productDetails.image : 'https://icon-library.com/images/icon-for-products/icon-for-products-7.jpg'}
+                                        />
+                                    </Tooltip>
+                                </IconButton>
                                 <Box sx={{ display: 'flex', flexDirection: 'column'}}>
                                     <CardContent sx={{ flex: '1 0 auto' }}>
                                         <Typography component="div" variant="h5">
@@ -135,6 +159,7 @@ function ProductPage(props) {
                                           product={productDetails} chip={selectedChip}
                                           open={openDeleteChipModal} setOpen={setOpenDeleteChipModal}
                                           callback={updateProductDetails}/>
+                <NewValueModalComponent open={showChangePicture} message={`Change product picture for ${productDetails?.name}? \nThis cannot be undone!`} helper={'URL'} confirm={handlePictureChangeConfirm} cancel={handleCancel}/>
             </main>
         </React.Fragment>
     );

@@ -31,11 +31,11 @@ function ProductService(api) {
         return api.post(`${path}`, {
             name: data.name,
             tags: data.tags,
-            number: data.productNo,
+            number: data.number,
             image: data.image
-        }).
-            then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
-            catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+        })
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
     //
     // const update = (data) => {
@@ -50,7 +50,13 @@ function ProductService(api) {
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     }
 
-    return {getAll, get, add, updateTags, getProductAnalysis};
+    const update = (product) => {
+        return api.put(`${path}`, product)
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+    }
+
+    return {getAll, get, add, updateTags, getProductAnalysis, update};
 }
 
 export default ProductService;

@@ -94,7 +94,7 @@ function NewProductPage(props) {
     const onSaveClick = () => {
         productApi.add({
             name: name,
-            productNo: productNumber,
+            number: productNumber,
             image: image,
             tags: chips,
         }).then((res) => {
