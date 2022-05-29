@@ -5,15 +5,15 @@ function ProductService(api) {
     const path = '/product';
 
     const getAll = () => {
-        return api.get(`${path}`).
-            then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
-            catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+        return api.get(`${path}`)
+        .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+        .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
     const get = (id) => {
-        return api.get(`${path}/${id}`).
-            then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
-            catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+        return api.get(`${path}/${id}`)
+        .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+        .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
     const getProductAnalysis = (productId, from, to) => {
@@ -45,9 +45,9 @@ function ProductService(api) {
     // };
 
     const updateTags = (id, tags) => {
-        return api.put(`${path}/${id}`, tags).
-            then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
-            catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+        return api.put(`${path}/${id}`, tags)
+        .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+        .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     }
 
     const update = (product) => {
