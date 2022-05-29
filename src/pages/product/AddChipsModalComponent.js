@@ -30,6 +30,7 @@ function AddChipsModalComponent(props) {
         tagApi.getAll().then((res, error) => {
             setStoredTags(res.data)
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -39,6 +40,7 @@ function AddChipsModalComponent(props) {
         })
         setChips(props.product.tags)
         setTagInput(props.product.tags.map((t) => {return t.tag}).join(' '))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.product])
 
     useEffect(() => {
@@ -47,6 +49,7 @@ function AddChipsModalComponent(props) {
             return {tag: c, exists: (storedTags.map((st) => st.tag).indexOf(c) > -1)};
         });
         setChips(chipArr);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tagInput]);
 
     const handleOpen = () => setOpen(true);
@@ -79,7 +82,7 @@ function AddChipsModalComponent(props) {
             e.preventDefault()
         }
 
-        if (!e.key.match(/^[\sa-zA-Z0-9\-\_]*$/)) {
+        if (!e.key.match(/^[\sa-zA-Z0-9\-_]*$/)) {
             e.preventDefault();
         }
     }

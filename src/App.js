@@ -24,7 +24,7 @@ import {
 } from './util/components';
 import {AppBarMenu, DrawerMenu, DrawerHeader} from './navigation/AppBarMenu';
 import {HomeRounded, Radar, LocationOn} from '@mui/icons-material';
-import Login from './pages/login/login';
+import LoginPage from './pages/login/LoginPage';
 
 import {firebaseConfiguration} from './configuration/FirebaseConfiguration.js';
 import AuthService from './services/AuthService.js';
@@ -232,7 +232,7 @@ export default function App(props) {
                     </Routes> :
                     <Routes>
                         <Route path="/" element={
-                            <Login eventManager={eventManager}
+                            <LoginPage eventManager={eventManager}
                             />}/>
                     </Routes>
                 }

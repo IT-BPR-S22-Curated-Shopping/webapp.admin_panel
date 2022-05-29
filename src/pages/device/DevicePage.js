@@ -1,7 +1,7 @@
 import * as React from 'react';
 import DeviceListComponent from './DeviceListComponent';
 import IdDeviceComponent from "../../components/IdDeviceComponent";
-import {Button, Grid, IconButton, Typography} from '@mui/material';
+import {Grid, Typography} from '@mui/material';
 import {useEffect} from 'react';
 import AnalysisComponent from "../../components/AnalysisComponent";
 import {currentMillis, getJanFirst2022, isBeforeJanFirst2022} from "../../util/timestampConverter";
@@ -31,10 +31,12 @@ function DevicePage(props) {
         api.getAll().then((res, err) => {
             setDeviceList(res.data);
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         getAnalysis(currentMillis() - 3600000);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [deviceDetails])
 
     const getAnalysis = (fromTimestamp) => {

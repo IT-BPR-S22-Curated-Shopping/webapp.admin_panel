@@ -9,8 +9,8 @@ import IdDeviceTypeComponent from "../../components/IdDeviceTypeComponent";
 
 function DeviceListComponent(props) {
 
-    const [dense, setDense] = React.useState(true);
-    const [secondary, setSecondary] = React.useState(true);
+    const [dense] = React.useState(true);
+    const [secondary] = React.useState(true);
     const [deviceList, setDeviceList] = React.useState([]);
     const [selectedIndex, setSelectedIndex] = React.useState(null);
 

@@ -1,4 +1,4 @@
-import {render, fireEvent, act, screen} from '@testing-library/react';
+import {render, act} from '@testing-library/react';
 import AddChipsModalComponent from './AddChipsModalComponent';
 import TagServiceMock from '../../mocks/TagServiceMock';
 import ProductServiceMock from '../../mocks/ProductServiceMock';

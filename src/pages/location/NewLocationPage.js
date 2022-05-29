@@ -6,12 +6,11 @@ import {
     CardContent,
     CardHeader, FormControl,
     Grid,
-    InputLabel, MenuItem, OutlinedInput, Select,
+    InputLabel, MenuItem, Select,
     TextField,
 
 } from '@mui/material';
 import {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
 import SuccessModalComponent from "../../components/SuccessModalComponent";
 import Typography from "@mui/material/Typography";
 
@@ -24,15 +23,10 @@ function NewLocationPage(props) {
     const [locationName, setLocationName] = useState('');
     const [selectedProduct, setSelectedProduct] = useState('');
     const [selectedDevices, setSelectedDevices] = useState([]);
-
-    const [locations, setLocations] = useState([]);
     const [products, setProducts] = useState([]);
     const [devices, setDevices] = useState([]);
     const [errorMsg, setErrorMsg] = useState('')
     const [showSuccess, setShowSuccess] = useState(false)
-
-    const navigate = useNavigate();
-
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
     const MenuProps = {
@@ -45,12 +39,6 @@ function NewLocationPage(props) {
     };
 
     useEffect(() => {
-        locationApi.getAll().then((res, err) => {
-            if (res) {
-                setLocations(res.data);
-            }
-        });
-
         deviceApi.getAllAvailable().then((res, err) => {
             if (res) {
                 setDevices(res.data);
@@ -62,6 +50,7 @@ function NewLocationPage(props) {
                 setProducts(res.data);
             }
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleChangeLocationName = (event) => {
@@ -106,7 +95,6 @@ function NewLocationPage(props) {
                 clearInput();
             }
         });
-        // navigate('/location');
     };
 
     const onClearClick = () => {

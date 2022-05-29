@@ -232,6 +232,7 @@ function AnalysisComponent (props) {
             setErrorMsg('')
             setData(props.analysis)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props])
 
     const PREFIX = 'Analytics';

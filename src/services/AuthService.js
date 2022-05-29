@@ -37,6 +37,7 @@ function AuthService(configuration, eventManager) {
         // firebase token is automatically persisted (https://firebase.google.com/docs/auth/web/manage-users#get_the_currently_signed_in_user)
         auth.onIdTokenChanged(user => {
             if (user) {
+                // eslint-disable-next-line
                 currentUser = user;
                 eventManager.invoke(eventManager.event.loggedIn, jwtToken());
                 console.log("Auth service: user signed in.")
@@ -54,6 +55,7 @@ function AuthService(configuration, eventManager) {
             eventManager.removeListener(eventManager.event.login, login)
             eventManager.removeListener(eventManager.event.logout, login)
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 }
 

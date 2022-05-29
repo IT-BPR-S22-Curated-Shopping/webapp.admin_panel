@@ -7,8 +7,8 @@ import {useEffect} from 'react';
 
 function ListComponent(props) {
 
-    const [dense, setDense] = React.useState(true);
-    const [secondary, setSecondary] = React.useState(true);
+    const [dense] = React.useState(true);
+    const [secondary] = React.useState(true);
     const [list, setList] = React.useState([]);
     const [selectedIndex, setSelectedIndex] = React.useState(null);
     const divideEachItem = props.divide;

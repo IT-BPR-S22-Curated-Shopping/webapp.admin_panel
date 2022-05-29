@@ -45,6 +45,7 @@ function APIProvider (configuration, eventManager) {
             eventManager.removeListener(eventManager.event.loggedIn, setAccessToken)
             eventManager.removeListener(eventManager.event.loggedOut, setAccessToken)
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return {

@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useEffect} from "react";
 
-function Login(props) {
+function LoginPage(props) {
     const eventManager = props.eventManager;
     const [pwValue, setPwValue] = React.useState('')
     const [pwError, setPwError] = React.useState(false);
@@ -70,7 +70,7 @@ function Login(props) {
             setPwHelpers(true, msg);
         }
         else {
-            console.log('Login page error: ' + msg);
+            console.log('LoginPage page error: ' + msg);
         }
     }
 
@@ -97,6 +97,7 @@ function Login(props) {
             eventManager.removeListener(eventManager.event.authError, handleError)
             eventManager.removeListener(eventManager.event.loggedIn, handleSuccess)
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -163,4 +164,4 @@ function Login(props) {
     );
 }
 
-export default Login;
+export default LoginPage;

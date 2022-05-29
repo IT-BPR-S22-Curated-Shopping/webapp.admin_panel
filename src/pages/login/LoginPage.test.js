@@ -1,5 +1,5 @@
 import {render, fireEvent, act, screen} from '@testing-library/react';
-import LoginPage from './login';
+import LoginPage from './LoginPage';
 import EventManager from '../../managers/events/EventManager';
 
 describe('test LoginPage', () => {

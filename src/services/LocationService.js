@@ -1,7 +1,7 @@
 import {ServiceResponseObject} from './ServiceResponseObject';
 import ServiceResponseEnum from '../util/ServiceResponseEnum';
 
-function LocationService(api) { //TODO: provider in constructor
+function LocationService(api) {
     const path = '/location';
 
     const getAll = () => {
@@ -12,8 +12,8 @@ function LocationService(api) { //TODO: provider in constructor
 
     const get = (id) => {
         return api.get(`${path}/${id}`)
-            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
-            catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
     const getLocationAnalysis = (locationId, from, to) => {
