@@ -5,14 +5,14 @@ function LocationService(api) { //TODO: provider in constructor
     const path = '/location';
 
     const getAll = () => {
-        return api.get(`${path}`).
-            then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
-            catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+        return api.get(`${path}`)
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
     const get = (id) => {
-        return api.get(`${path}/${id}`).
-            then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
+        return api.get(`${path}/${id}`)
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
             catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
@@ -39,14 +39,14 @@ function LocationService(api) { //TODO: provider in constructor
     };
 
     const update = (location) => {
-        return api.put(`${path}/${location.id}`, location).
-            then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
-            catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+        return api.put(`${path}/${location.id}`, location)
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
     const updateDevices = (id, devices) => {
         return api.put(`${path}/${id}/devices`, devices)
-        .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
             .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
@@ -58,9 +58,9 @@ function LocationService(api) { //TODO: provider in constructor
     
 
     const removeLocation = (id) => {
-        return api.del(`${path}/${id}`).
-            then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data)).
-            catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
+        return api.del(`${path}/${id}`)
+            .then(res => ServiceResponseObject(ServiceResponseEnum.SUCCESS, res.data))
+            .catch(error => ServiceResponseObject(ServiceResponseEnum.ERROR, {errorMsg: error}));
     };
 
     return {getAll, get, addLocation, removeLocation, update, updateDevices, updateProduct, getLocationAnalysis};

@@ -23,7 +23,7 @@ import {
     Product, NewProduct,
 } from './util/components';
 import {AppBarMenu, DrawerMenu, DrawerHeader} from './navigation/AppBarMenu';
-import {HomeRounded, Radar, Devices, LocationOn, Layers, WbIridescent} from '@mui/icons-material';
+import {HomeRounded, Radar, LocationOn} from '@mui/icons-material';
 import Login from './pages/login/login';
 
 import {firebaseConfiguration} from './configuration/FirebaseConfiguration.js';
