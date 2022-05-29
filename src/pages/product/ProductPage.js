@@ -39,6 +39,7 @@ function ProductPage(props) {
                 return {id: x.id, value: x.name};
             }));
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onAddProductClick = () => {
@@ -65,6 +66,7 @@ function ProductPage(props) {
 
     useEffect(() => {
         getAnalysis(currentMillis() - 3600000);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productDetails])
 
     const getAnalysis = (fromTimestamp) => {

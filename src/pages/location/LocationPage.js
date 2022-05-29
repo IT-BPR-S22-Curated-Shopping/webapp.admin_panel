@@ -70,10 +70,12 @@ function LocationPage(props) {
                 return {id: x.id, value: x.name};
             }));
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         getAnalysis(currentMillis() - 3600000);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [locationDetails])
 
     const getAnalysis = (fromTimestamp) => {

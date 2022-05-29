@@ -25,6 +25,7 @@ function NewProductPage(props) {
                 setStoredTags(res.data);
             }
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -33,6 +34,7 @@ function NewProductPage(props) {
             return {tag: c, exists: (storedTags.map((st) => st.tag).indexOf(c) > -1)};
         });
         setChips(chipArr);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tagInput]);
 
     const handleChangeName = (event) => {
@@ -56,7 +58,7 @@ function NewProductPage(props) {
     };
 
     function validateInput(e) {
-        if (!e.key.match(/^[\sa-zA-Z0-9\-\_]*$/)) {
+        if (!e.key.match(/^[\sa-zA-Z0-9\-_]*$/)) {
             e.preventDefault();
         }
     }
