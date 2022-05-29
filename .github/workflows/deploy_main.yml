@@ -34,7 +34,9 @@ jobs:
         run: npm ci
 
       - name: Build Client
-        run: npm run build
+        run:
+          npm run build
+          npm run test --if-present
         # Set base url for remote endpoint
 
       - name: Netlify Actions for Deploying App
