@@ -96,6 +96,7 @@ export default function App(props) {
         navigate('/');
     };
 
+    // eslint-disable-next-line
     useEffect(() => {
         eventManager.addListener(eventManager.event.loggedIn, handleLoggedIn);
         eventManager.addListener(eventManager.event.loggedOut, handleLoggedOut);
@@ -104,6 +105,7 @@ export default function App(props) {
             eventManager.removeListener(eventManager.event.loggedIn, handleLoggedIn);
             eventManager.removeListener(eventManager.event.loggedOut, handleLoggedOut);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
