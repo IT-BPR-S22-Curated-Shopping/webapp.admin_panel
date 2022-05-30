@@ -70,7 +70,7 @@ function LoginPage(props) {
             setPwHelpers(true, msg);
         }
         else {
-            console.log('LoginPage page error: ' + msg);
+            console.log('Login page error: ' + msg);
         }
     }
 
@@ -97,7 +97,6 @@ function LoginPage(props) {
             eventManager.removeListener(eventManager.event.authError, handleError)
             eventManager.removeListener(eventManager.event.loggedIn, handleSuccess)
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
