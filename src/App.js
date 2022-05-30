@@ -18,13 +18,13 @@ import ListItemText from '@mui/material/ListItemText';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import {Route, Routes, useNavigate} from 'react-router-dom';
 import {
-    About, Device, Home,
+    Device,
     Location, NewLocation,
     Product, NewProduct,
 } from './util/components';
 import {AppBarMenu, DrawerMenu, DrawerHeader} from './navigation/AppBarMenu';
-import {HomeRounded, Radar, LocationOn} from '@mui/icons-material';
-import LoginPage from './pages/login/LoginPage';
+import {Radar, LocationOn} from '@mui/icons-material';
+import Login from './pages/login/login';
 
 import {firebaseConfiguration} from './configuration/FirebaseConfiguration.js';
 import AuthService from './services/AuthService.js';
@@ -47,9 +47,8 @@ export default function App(props) {
     const [authorized, setAuthorized] = React.useState(false);
     const navigate = useNavigate();
     const pages = [
-        {name: 'Home', icon: <HomeRounded/>},
-        {name: 'Device', icon: <Radar/>},
         {name: 'Location', icon: <LocationOn/>},
+        {name: 'Device', icon: <Radar/>},
         {name: 'Product', icon: <ShoppingBasketIcon/>},
     ];
 
@@ -88,7 +87,7 @@ export default function App(props) {
 
     const handleLoggedIn = () => {
         updateAuthorized(true);
-        navigate('/home');
+        navigate('/location');
     };
 
     const handleLoggedOut = () => {
@@ -191,18 +190,11 @@ export default function App(props) {
                     </ListItem>
                     : null
                 }
-                <Box marginLeft={2}>{process.env['REACT_APP_USE_API'] === 'true' ? 'API' : 'Mock'}</Box>
             </DrawerMenu>
             <Box component="main" sx={{flexGrow: 1, pl: 1}}>
                 <DrawerHeader/>
                 {authorized ?
                     <Routes>
-                        <Route path="/home" element={
-                            <Home
-                            />}/>
-                        <Route path="/about" element={
-                            <About
-                            />}/>
                         <Route path="/location" element={
                             <Location deviceService={deviceService}
                                       locationService={locationService}
