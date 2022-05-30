@@ -97,6 +97,7 @@ function LoginPage(props) {
             eventManager.removeListener(eventManager.event.authError, handleError)
             eventManager.removeListener(eventManager.event.loggedIn, handleSuccess)
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
