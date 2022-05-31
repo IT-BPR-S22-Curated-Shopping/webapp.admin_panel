@@ -1,4 +1,4 @@
-import {ServiceResponseObject} from './ServiceResponseObject';
+import {ServiceResponseObject} from '../util/ServiceResponseObject';
 import ServiceResponseEnum from '../util/ServiceResponseEnum';
 
 function ProductService(api) {
