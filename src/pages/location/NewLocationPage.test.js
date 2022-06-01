@@ -60,7 +60,7 @@ describe('test NewLocationPage', () => {
             expect(element).toBeTruthy();
             expect(element).toBeVisible();
             expect(elements).toBeTruthy()
-            expect(elements.length).toBe(5)
+            expect(elements.length).toBe(4)
             expect(elements[elements.length-2]).toHaveTextContent("Save")
             expect(elements[elements.length-1]).toHaveTextContent("Clear")
             expect(element).toHaveTextContent("Location name")
@@ -74,7 +74,10 @@ describe('test NewLocationPage', () => {
             let lServiceSpy = jest.spyOn(lService, 'addLocation')
 
             // act
-            await act(async ()=> render(<NewLocationPage locationService={lService} deviceService={dService} productService={pService}/>))
+            await act(async ()=> {
+                render(<NewLocationPage locationService={lService} deviceService={dService} productService={pService}/>);
+            })
+
             let button = screen.getByText("Save", {hidden: true})
             let locationNameInput = screen.getByTestId('textField-location-name');
 
@@ -82,11 +85,13 @@ describe('test NewLocationPage', () => {
             fireEvent.change(locationNameInput, {target: {value: 'new location name'}})
             fireEvent.click(button);
 
+            await act(async ()=> {
+                render(<NewLocationPage locationService={lService} deviceService={dService} productService={pService}/>);
+            })
+
             // // assert
             expect(button).toBeTruthy();
             expect(lServiceSpy).toHaveBeenCalledTimes(1)
-            //TODO: check if api has been called with right parameters
-
         });
 
 

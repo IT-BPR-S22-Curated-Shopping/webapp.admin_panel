@@ -1,7 +1,7 @@
 import {ServiceResponseObject} from '../util/ServiceResponseObject';
 import ServiceResponseEnum from '../util/ServiceResponseEnum';
 
-function DeviceService(api) { //TODO: provider in constructor
+function DeviceService(api) {
     const path = '/device';
 
     const getAll = () => {

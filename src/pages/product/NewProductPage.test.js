@@ -3,6 +3,8 @@ import {render, fireEvent, act, screen} from '@testing-library/react';
 import NewProductPage from './NewProductPage';
 import TagServiceMock from '../../mocks/TagServiceMock';
 import ProductServiceMock from '../../mocks/ProductServiceMock';
+import ProductService from '../../services/ProductService';
+import TagService from '../../services/TagService';
 
 
 describe('test NewProductPage', () => {
@@ -79,7 +81,7 @@ describe('test NewProductPage', () => {
 
             // assert
             expect(pServiceSpy).toHaveBeenCalledTimes(1);
-            expect(pServiceSpy).toHaveBeenCalledWith({image: "http://some.image/123.png", name: "new product name", productNo: "123", tags: []})
+            expect(pServiceSpy).toHaveBeenCalledWith({image: "http://some.image/123.png", name: "new product name", number: "123", tags: []})
 
         });
 
