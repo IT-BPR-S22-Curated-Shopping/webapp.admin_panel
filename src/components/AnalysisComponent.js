@@ -96,10 +96,10 @@ function AnalysisComponent (props) {
         setRange(selection)
     };
 
-    const getDataArray = (size) => {
+    const getChartArray = (size) => {
         const a = []
         for (let i = 0; i < size; i++) {
-            a.push({ period: '', avgTime: 0 })
+            a.push({ period: '', totalTime: 0 })
         }
         return a;
      }
@@ -122,7 +122,7 @@ function AnalysisComponent (props) {
         }
      }
 
-    const setData = (data) => {
+    const setChart = (data) => {
         const currentRange = range.value / oneDayMillis;
         const customerAnalysis = data.customerAnalysis
         const lastSample = data.to
@@ -135,15 +135,15 @@ function AnalysisComponent (props) {
                     values[index] += customerAnalysis[i].visits[v].durationMillis / 1000
                 }
             }
-            const dataArray = getDataArray(6);
+            const chartArray = getChartArray(6);
             for (let x = 6; x > 0; x--) {
-                dataArray[x - 1].period = minutes
-                dataArray[x - 1].avgTime = values[x - 1]
+                chartArray[x - 1].period = minutes
+                chartArray[x - 1].totalTime = values[x - 1]
                 minutes -= 10
                 if (minutes < 0)
                     minutes += 60
             }
-            setChartData(dataArray)
+            setChartData(chartArray)
         }
         else if (currentRange === 1) {
             let hour = hourFromMillis(lastSample)
@@ -154,15 +154,15 @@ function AnalysisComponent (props) {
                     values[index] += customerAnalysis[i].visits[v].durationMillis / 1000
                 }
             }
-            const dataArray = getDataArray(24);
+            const chartArray = getChartArray(24);
             for (let x = 24; x > 0; x--) {
-                dataArray[x - 1].period = hour
-                dataArray[x - 1].avgTime = values[hour]
+                chartArray[x - 1].period = hour
+                chartArray[x - 1].totalTime = values[hour]
                 hour --
                 if (hour < 0)
                     hour = 23
             }
-            setChartData(dataArray)
+            setChartData(chartArray)
         }
         else if (currentRange === 7 ) {
             let day = dayFromMillis(lastSample)
@@ -173,15 +173,15 @@ function AnalysisComponent (props) {
                     values[index] += customerAnalysis[i].visits[v].durationMillis / 1000
                 }
             }
-            const dataArray = getDataArray(7);
+            const chartArray = getChartArray(7);
             for (let x = 7; x > 0; x--) {
-                dataArray[x - 1].period = weekday[day]
-                dataArray[x - 1].avgTime = values[day]
+                chartArray[x - 1].period = weekday[day]
+                chartArray[x - 1].totalTime = values[day]
                 day --
                 if (day < 0)
                     day = 6
             }
-            setChartData(dataArray)
+            setChartData(chartArray)
         }
         else if (currentRange === 30 ) {
             let week = getWeekNumberFromMillis(lastSample)
@@ -192,14 +192,13 @@ function AnalysisComponent (props) {
                     values[index] += customerAnalysis[i].visits[v].durationMillis / 1000
                 }
             }
-            const dataArray = getDataArray(4);
+            const chartArray = getChartArray(4);
             for (let x = 4; x > 0; x--) {
-                dataArray[x - 1].period = 'Week ' + (week)
-                dataArray[x - 1].avgTime = values[x - 1]
-                dataArray[x - 1].avgTime = values[x - 1]
+                chartArray[x - 1].period = 'Week ' + (week)
+                chartArray[x - 1].totalTime = values[x - 1]
                 week --;
             }
-            setChartData(dataArray)
+            setChartData(chartArray)
         }
         else if (currentRange === 365 ) {
             let month = monthFromMillis(lastSample)
@@ -210,15 +209,15 @@ function AnalysisComponent (props) {
                     values[index] += customerAnalysis[i].visits[v].durationMillis / 1000
                 }
             }
-            const dataArray = getDataArray(12);
+            const chartArray = getChartArray(12);
             for (let x = 12; x > 0; x--) {
-                dataArray[x - 1].period = monthName[month]
-                dataArray[x - 1].avgTime = values[month]
+                chartArray[x - 1].period = monthName[month]
+                chartArray[x - 1].totalTime = values[month]
                 month --;
                 if (month < 0)
                     month = 11
             }
-            setChartData(dataArray)
+            setChartData(chartArray)
         }
     }
 
@@ -230,7 +229,7 @@ function AnalysisComponent (props) {
         else {
             setError(false)
             setErrorMsg('')
-            setData(props.analysis)
+            setChart(props.analysis)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props])
