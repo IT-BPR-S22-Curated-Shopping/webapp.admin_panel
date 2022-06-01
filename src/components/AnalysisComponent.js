@@ -337,7 +337,7 @@ function AnalysisComponent (props) {
 
                     <LineSeries
                         name="detections"
-                        valueField="avgTime"
+                        valueField="totalTime"
                         argumentField="period"
                         seriesComponent={Line}
                     />
