@@ -47,7 +47,7 @@ describe('test service', () => {
         let api = APIProvider(axiosConfiguration, new EventManager(event));
         let spy = jest.spyOn(api, 'post').mockImplementation(() => new Promise((resolve, reject) => {}));
         let service = ProductService(api);
-        let data = {name: "some Name", tags: [{id:1, tag:"testTag1"}], productNo: "123", image: "http://image.com/1.png"}
+        let data = {name: "some Name", tags: [{id:1, tag:"testTag1"}], number: "123", image: "http://image.com/1.png"}
         // act
         service.add(data);
 
