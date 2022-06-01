@@ -344,7 +344,7 @@ function AnalysisComponent (props) {
                     />
 
                     <Title
-                        text="Average Customer Time Detected\n(seconds)"
+                        text="Total Customer Time Detected\n(seconds)"
                         textComponent={Text}
                     />
                     <Animation />
