@@ -86,7 +86,6 @@ function NewLocationPage(props) {
             productId: selectedProduct,
             deviceIds: findCommonElements(devices, selectedDevices).map(x => x.id),
         }).then((res) => {
-            console.log(res.data)
             if (res.data.hasOwnProperty('errorMsg')) {
                 setErrorMsg(res.data.errorMsg.response.data)
             }

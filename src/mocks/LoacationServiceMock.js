@@ -55,7 +55,10 @@ function LocationServiceMock() {
     };
 
     const addLocation = (name) => {
-        return {};
+        return new Promise((resolve, reject) => {
+            let res = ServiceResponseObject(ServiceResponseEnum.SUCCESS, []);
+            resolve(res);
+        })
     };
 
     const removeLocation = (id) => {

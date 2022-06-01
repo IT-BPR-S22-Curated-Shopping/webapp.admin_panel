@@ -46,8 +46,17 @@ function DeviceServiceMock() {
             resolve(res);
         });
     };
+    const getAllAvailable = () => new Promise((resolve, reject) => {
+        let res = ServiceResponseObject(ServiceResponseEnum.SUCCESS, [
+            {name: 'Device 1', id: 1, deviceId: '6d37f0b8-084c-4bf5-87eb-893e6f7ccb50'},
+            {name: 'Device 2', id: 2, deviceId: '170d9e8b-1f57-4ffb-aae0-01338dce089b'},
+            {name: 'Device 3', id: 3, deviceId: '97a0d5f2-e5ac-45cd-bbf0-6e3252eb2484'},
+            {name: 'Device 4', id: 4, deviceId: 'acafcc8a-447c-427c-a13b-62e8c2f3c21e'},
+        ]);
+        resolve(res);
+    })
 
-    return {getAll, get};
+    return {getAll, get, getAllAvailable};
 }
 
 export default DeviceServiceMock;
